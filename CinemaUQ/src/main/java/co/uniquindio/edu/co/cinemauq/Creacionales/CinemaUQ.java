@@ -1,12 +1,17 @@
 package co.uniquindio.edu.co.cinemauq.Creacionales;
 
-import co.uniquindio.edu.co.cinemauq.model.*;
-import co.uniquindio.edu.co.cinemauq.model.Estructurales.Producto;
+import co.uniquindio.edu.co.cinemauq.Model.Administrador;
+import co.uniquindio.edu.co.cinemauq.Model.Cliente;
+import co.uniquindio.edu.co.cinemauq.Model.Compra;
+import co.uniquindio.edu.co.cinemauq.Model.Funcion;
+import co.uniquindio.edu.co.cinemauq.Model.Pelicula;
+import co.uniquindio.edu.co.cinemauq.Model.Promocion;
+import co.uniquindio.edu.co.cinemauq.Model.Sala;
+import co.uniquindio.edu.co.cinemauq.Estructurales.Producto;
 
 import java.util.ArrayList;
 import java.util.List;
 
-// Singleton: una unica instancia con los datos del cine, compartida por controladores y vistas.
 public class CinemaUQ {
     private static CinemaUQ instancia;
 

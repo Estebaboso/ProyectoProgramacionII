@@ -1,6 +1,6 @@
 package co.uniquindio.edu.co.cinemauq.Comportamentales;
 
-import co.uniquindio.edu.co.cinemauq.model.Compra;
+import co.uniquindio.edu.co.cinemauq.Model.Compra;
 
 public class StatePendiente implements StateCompra {
     private Compra compra;

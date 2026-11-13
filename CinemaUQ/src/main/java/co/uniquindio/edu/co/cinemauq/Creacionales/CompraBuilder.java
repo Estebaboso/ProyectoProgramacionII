@@ -1,9 +1,9 @@
 package co.uniquindio.edu.co.cinemauq.Creacionales;
 
-import co.uniquindio.edu.co.cinemauq.model.Cliente;
-import co.uniquindio.edu.co.cinemauq.model.Entrada;
-import co.uniquindio.edu.co.cinemauq.model.Estructurales.Producto;
-import co.uniquindio.edu.co.cinemauq.model.Promocion;
+import co.uniquindio.edu.co.cinemauq.Model.Cliente;
+import co.uniquindio.edu.co.cinemauq.Model.Entrada;
+import co.uniquindio.edu.co.cinemauq.Model.Promocion;
+import co.uniquindio.edu.co.cinemauq.Estructurales.Producto;
 
 import java.util.ArrayList;
 import java.util.List;

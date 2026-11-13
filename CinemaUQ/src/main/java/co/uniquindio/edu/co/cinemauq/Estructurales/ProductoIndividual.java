@@ -8,14 +8,13 @@ public class ProductoIndividual implements Producto {
     private int id;
     private double precio;
     private String tamano;
-    private List<String> adicionales;
+
 
     public ProductoIndividual(String nombre, int id, double precio, String tamano) {
         this.nombre = nombre;
         this.id = id;
         this.precio = precio;
         this.tamano = tamano;
-        this.adicionales = new ArrayList<>();
     }
 
 
@@ -48,10 +47,5 @@ public class ProductoIndividual implements Producto {
     public void setTamano(String tamano) {
         this.tamano = tamano;
     }
-    public List<String> getAdicionales() {
-        return adicionales;
-    }
-    public void setAdicionales(List<String> adicionales) {
-        this.adicionales = adicionales;
-    }
+
 }

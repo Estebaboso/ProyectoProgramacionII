@@ -1,6 +1,6 @@
 package co.uniquindio.edu.co.cinemauq.Model;
 
-import co.uniquindio.edu.co.cinemauq.model.Comportamentales.ObserverEvento;
+import co.uniquindio.edu.co.cinemauq.Comportamentales.ObserverEvento;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -16,7 +16,7 @@ public class Funcion {
     private double precio;
     private EstadoFuncion estadoFuncion;
     private TipoFuncion tipoFuncion;
-    private List<String> asientosReservados; // codigos de los asientos ocupados en ESTA funcion
+    private List<String> asientosReservados;
     private List<ObserverEvento> observadores;
 
     public Funcion(int id, Pelicula pelicula, Sala sala, LocalDate fecha, LocalTime horaInicio, double precio,

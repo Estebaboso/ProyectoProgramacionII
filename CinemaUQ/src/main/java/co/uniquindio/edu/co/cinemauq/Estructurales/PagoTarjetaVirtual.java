@@ -1,6 +1,6 @@
 package co.uniquindio.edu.co.cinemauq.Estructurales;
 
-import co.uniquindio.edu.co.cinemauq.model.TarjetaVirtual;
+import co.uniquindio.edu.co.cinemauq.Model.TarjetaVirtual;
 
 public class PagoTarjetaVirtual implements ProcesadorPago {
     private TarjetaVirtual tarjeta;

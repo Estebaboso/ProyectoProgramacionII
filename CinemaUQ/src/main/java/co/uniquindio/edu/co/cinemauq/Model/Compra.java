@@ -1,9 +1,9 @@
 package co.uniquindio.edu.co.cinemauq.Model;
 
-import co.uniquindio.edu.co.cinemauq.model.Comportamentales.ObserverEvento;
-import co.uniquindio.edu.co.cinemauq.model.Comportamentales.StateCompra;
-import co.uniquindio.edu.co.cinemauq.model.Comportamentales.StrategyReembolso;
-import co.uniquindio.edu.co.cinemauq.model.Estructurales.Producto;
+import co.uniquindio.edu.co.cinemauq.Comportamentales.ObserverEvento;
+import co.uniquindio.edu.co.cinemauq.Comportamentales.StateCompra;
+import co.uniquindio.edu.co.cinemauq.Comportamentales.StrategyReembolso;
+import co.uniquindio.edu.co.cinemauq.Estructurales.Producto;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -19,9 +19,9 @@ public class Compra {
     private double subtotal;
     private double iva;
     private double total;
-    private StateCompra estado;                    // State
-    private StrategyReembolso politicaReembolso;   // Strategy
-    private List<ObserverEvento> observadores;     // Observer
+    private StateCompra estado;
+    private StrategyReembolso politicaReembolso;
+    private List<ObserverEvento> observadores;
 
     public Compra(int id, Cliente cliente, LocalDateTime fechaHora, List<Entrada> entradas,
                   List<Producto> productos, Promocion promocion) {

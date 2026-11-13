@@ -4,17 +4,16 @@ public class Pelicula {
     private String nombre;
     private int id;
     private String genero;
-    private int duracion; // en minutos
+    private int duracion;
     private RestriccionPelicula restriccion;
-    private String sinopsis;
 
-    public Pelicula(String nombre, int id, String genero, int duracion, RestriccionPelicula restriccion, String sinopsis) {
+    public Pelicula(String nombre, int id, String genero, int duracion, RestriccionPelicula restriccion) {
         this.nombre = nombre;
         this.id = id;
         this.genero = genero;
         this.duracion = duracion;
         this.restriccion = restriccion;
-        this.sinopsis = sinopsis;
+
     }
 
     public String getNombre() {
@@ -57,11 +56,4 @@ public class Pelicula {
         this.restriccion = restriccion;
     }
 
-    public String getSinopsis() {
-        return sinopsis;
-    }
-
-    public void setSinopsis(String sinopsis) {
-        this.sinopsis = sinopsis;
-    }
 }

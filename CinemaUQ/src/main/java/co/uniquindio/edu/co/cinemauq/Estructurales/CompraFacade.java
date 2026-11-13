@@ -1,6 +1,6 @@
 package co.uniquindio.edu.co.cinemauq.Estructurales;
 
-import co.uniquindio.edu.co.cinemauq.model.Creacionales.CinemaUQ;
+import co.uniquindio.edu.co.cinemauq.Creacionales.CinemaUQ;
 
 public class CompraFacade {
     private CinemaUQ cinemaUQ;
