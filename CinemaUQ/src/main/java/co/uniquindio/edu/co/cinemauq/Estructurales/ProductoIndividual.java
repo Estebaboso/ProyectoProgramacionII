@@ -7,14 +7,14 @@ public class ProductoIndividual implements Producto {
     private String nombre;
     private int id;
     private double precio;
-    private String tamano;
 
 
-    public ProductoIndividual(String nombre, int id, double precio, String tamano) {
+
+    public ProductoIndividual(String nombre, int id, double precio) {
         this.nombre = nombre;
         this.id = id;
         this.precio = precio;
-        this.tamano = tamano;
+
     }
 
 
@@ -41,11 +41,6 @@ public class ProductoIndividual implements Producto {
     public void setPrecio(double precio) {
         this.precio = precio;
     }
-    public String getTamano() {
-        return tamano;
-    }
-    public void setTamano(String tamano) {
-        this.tamano = tamano;
-    }
+
 
 }
