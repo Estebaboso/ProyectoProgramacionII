@@ -1,0 +1,625 @@
+@startuml CinemaUQ
+' ==========================================================
+'  CinemaUQ - Diagrama de clases (Java / JavaFX / MVC)
+' ==========================================================
+left to right direction
+skinparam linetype ortho
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+skinparam nodesep 40
+skinparam ranksep 70
+skinparam classFontSize 12
+skinparam packageStyle rectangle
+hide empty members
+
+' ==========================================================
+' 1. ENUMERACIONES
+' ==========================================================
+enum EstadoTarjeta {
+  ACTIVA
+  INACTIVA
+}
+
+enum EstadoFuncion {
+  PROGRAMADA
+  EN_CURSO
+  FINALIZADA
+  CANCELADA
+}
+
+enum TipoFuncion {
+  DOS_D
+  TRES_D
+  IMAX
+}
+
+enum TipoMovimiento {
+  RECARGA
+  PAGO
+  REEMBOLSO
+}
+
+enum ClasificacionEdad {
+  TODO_PUBLICO
+  MAYORES_7
+  MAYORES_12
+  MAYORES_15
+  MAYORES_18
+}
+
+enum TipoReporte {
+  VENTAS_POR_PERIODO
+  ENTRADAS_POR_PELICULA
+  OCUPACION_SALAS
+  PRODUCTOS_Y_COMBOS
+  RECARGAS
+  CANCELACIONES_REEMBOLSOS
+  PUNTOS
+}
+
+' ==========================================================
+' 2. INTERFACES
+' ==========================================================
+interface Redimible <<ISP>> {
+  +getPuntosRequeridos(): int
+}
+
+interface MedioPago <<Proxy - Subject>> {
+  +pagar(monto: double): Movimiento
+  +reembolsar(monto: double): Movimiento
+  +consultarSaldo(): double
+}
+
+interface EstadoCompra <<State>> {
+  +pagar(compra: Compra): void
+  +cancelar(compra: Compra): void
+  +reembolsar(compra: Compra): void
+  +getNombre(): String
+}
+
+interface PoliticaReembolso <<Strategy>> {
+  +calcularReembolso(compra: Compra): double
+  +permiteCancelar(compra: Compra): boolean
+}
+
+interface ObservadorCompra <<Observer>> {
+  +actualizar(compra: Compra, evento: String): void
+}
+
+interface ObservadorFuncion <<Observer>> {
+  +funcionCancelada(funcion: Funcion): void
+}
+
+interface ExportadorReporte <<Adapter - Target>> {
+  +exportar(reporte: Reporte, ruta: String): void
+}
+
+' ==========================================================
+' 3. CLASES ABSTRACTAS
+' ==========================================================
+abstract class Usuario {
+  -id: String
+  -nombre: String
+  -telefono: String
+  +getId(): String
+  +getNombre(): String
+  +getTelefono(): String
+}
+
+abstract class Producto <<Composite - Component>> {
+  -id: String
+  -nombre: String
+  -precio: double
+  -puntosRequeridos: int
+  +{abstract} getPrecio(): double
+  +{abstract} getPuntosRequeridos(): int
+  +getNombre(): String
+}
+
+abstract class Entrada <<Factory Method - Product>> {
+  -codigo: String
+  #precioBase: double
+  +{abstract} calcularPrecio(): double
+  +getPuntosRequeridos(): int
+}
+
+abstract class FabricaEntrada <<Factory Method - Creator>> {
+  +{abstract} crearEntrada(funcion: Funcion, asiento: Asiento): Entrada
+  +emitirEntrada(funcion: Funcion, asiento: Asiento): Entrada
+}
+
+' ==========================================================
+' 4. CLASES CONCRETAS - USUARIOS Y TARJETA
+' ==========================================================
+class Cliente {
+  -numTarjeta: String
+  -contrasena: String
+  -correo: String
+  +iniciarSesion(correo: String, contrasena: String): boolean
+  +consultarCartelera(): List<Funcion>
+  +seleccionarAsiento(f: Funcion, codigo: String): void
+  +realizarCompra(): Compra
+  +solicitarCancelacion(c: Compra): void
+  +redimirConPuntos(item: Redimible): void
+  +consultarSaldo(): double
+  +consultarPuntos(): int
+  +revisarHistorialCompras(): List<Compra>
+}
+
+class Administrador {
+  -contrasena: String
+  +gestionarPelicula(): void
+  +gestionarSala(): void
+  +gestionarFuncion(): void
+  +cancelarFuncion(f: Funcion): void
+  +gestionarProducto(): void
+  +gestionarCombo(): void
+  +gestionarPromocion(): void
+  +consultarClientes(): List<Cliente>
+  +recargarTarjeta(c: Cliente, monto: double): void
+  +consultarEstadisticas(): void
+  +generarReporte(tipo: TipoReporte): Reporte
+}
+
+class TarjetaVirtual <<Proxy - RealSubject>> {
+  -estado: EstadoTarjeta
+  -saldo: double
+  +pagar(monto: double): Movimiento
+  +reembolsar(monto: double): Movimiento
+  +recargar(monto: double): Movimiento
+  +consultarSaldo(): double
+  +getEstado(): EstadoTarjeta
+}
+
+class TarjetaVirtualProxy <<Proxy>> {
+  -tarjetaReal: TarjetaVirtual
+  -validarEstado(): void
+  -validarSaldo(monto: double): void
+  +pagar(monto: double): Movimiento
+  +reembolsar(monto: double): Movimiento
+  +consultarSaldo(): double
+}
+
+class Movimiento {
+  -tipoMovimiento: TipoMovimiento
+  -monto: double
+  -fecha: LocalDateTime
+}
+
+class CuentaPuntos {
+  +acumular(monto: double, fecha: LocalDate): void
+  +redimir(puntos: int): void
+  +getPuntosVigentes(): int
+  +eliminarVencidos(): void
+}
+
+class PuntosAcumulados {
+  -puntos: int
+  -fechaObtencion: LocalDate
+  -fechaVencimiento: LocalDate
+  +estaVigente(): boolean
+}
+
+' ==========================================================
+' 5. CLASES CONCRETAS - CINE, SALA, FUNCION, PELICULA
+' ==========================================================
+class Cine <<Singleton>> {
+  -{static} instancia: Cine
+  -codigo: String
+  -nombre: String
+  -direccion: String
+  -ciudad: String
+  -telefono: String
+  -correo: String
+  -gerente: String
+  -horarioApertura: LocalTime
+  -horarioCierre: LocalTime
+  -Cine()
+  +{static} getInstancia(): Cine
+  +registrarCliente(c: Cliente): void
+  +agregarPelicula(p: Pelicula): void
+  +agregarSala(s: Sala): void
+  +agregarFuncion(f: Funcion): void
+  +agregarProducto(p: Producto): void
+  +agregarPromocion(p: Promocion): void
+  +registrarCompra(c: Compra): void
+}
+
+class Sala {
+  -numSala: int
+  -cantAsientos: int
+  +getAsientos(): List<Asiento>
+}
+
+class Asiento {
+  -codigo: String
+  -fila: char
+  -columna: int
+}
+
+class Pelicula {
+  -id: String
+  -nombre: String
+  -genero: String
+  -duracion: int
+  -restriccion: ClasificacionEdad
+}
+
+class Funcion {
+  -precio: double
+  -fecha: LocalDate
+  -horaInicio: LocalTime
+  -horaFin: LocalTime
+  -estado: EstadoFuncion
+  -tipoFuncion: TipoFuncion
+  -codigosAsientosReservados: Set<String>
+  +calcularHoraFin(): LocalTime
+  +estaDisponible(codigoAsiento: String): boolean
+  +reservarAsiento(codigoAsiento: String): void
+  +liberarAsiento(codigoAsiento: String): void
+  +cancelar(): void
+  +agregarObservador(o: ObservadorFuncion): void
+  -notificarCancelacion(): void
+}
+
+class Promocion {
+  -id: String
+  -nombre: String
+  -descuento: double
+  -fechaInicio: LocalDate
+  -fechaFin: LocalDate
+  +estaVigente(): boolean
+  +aplicar(monto: double): double
+}
+
+' ==========================================================
+' 6. CLASES CONCRETAS - PRODUCTOS (COMPOSITE)
+' ==========================================================
+class ProductoSimple <<Composite - Leaf>> {
+  -tamano: String
+  -adicionales: String
+  +getPrecio(): double
+  +getPuntosRequeridos(): int
+}
+
+class Combo <<Composite - Composite>> {
+  -descuentoCombo: double
+  +agregar(p: Producto): void
+  +remover(p: Producto): void
+  +getPrecio(): double
+  +getPuntosRequeridos(): int
+}
+
+' ==========================================================
+' 7. CLASES CONCRETAS - ENTRADAS (FACTORY METHOD)
+' ==========================================================
+class Entrada2D {
+  +calcularPrecio(): double
+}
+
+class Entrada3D {
+  -recargo3D: double
+  +calcularPrecio(): double
+}
+
+class EntradaIMAX {
+  -recargoIMAX: double
+  +calcularPrecio(): double
+}
+
+class FabricaEntrada2D {
+  +crearEntrada(funcion: Funcion, asiento: Asiento): Entrada
+}
+
+class FabricaEntrada3D {
+  +crearEntrada(funcion: Funcion, asiento: Asiento): Entrada
+}
+
+class FabricaEntradaIMAX {
+  +crearEntrada(funcion: Funcion, asiento: Asiento): Entrada
+}
+
+' ==========================================================
+' 8. CLASES CONCRETAS - COMPRA (BUILDER / STATE / STRATEGY / OBSERVER)
+' ==========================================================
+class Compra <<Builder - Product>> {
+  -id: String
+  -fecha: LocalDate
+  -hora: LocalTime
+  -iva: double
+  -total: double
+  -estado: EstadoCompra
+  -reembolsada: boolean
+  -observadores: List<ObservadorCompra>
+  +calcularTotal(): double
+  +pagar(): void
+  +cancelar(): void
+  +reembolsar(): void
+  +cambiarEstado(e: EstadoCompra): void
+  +setPoliticaReembolso(p: PoliticaReembolso): void
+  +agregarObservador(o: ObservadorCompra): void
+  -notificar(evento: String): void
+}
+
+class CompraBuilder <<Builder>> {
+  +conCliente(c: Cliente): CompraBuilder
+  +conFuncion(f: Funcion): CompraBuilder
+  +agregarEntrada(e: Entrada): CompraBuilder
+  +agregarProducto(p: Producto): CompraBuilder
+  +conPromocion(p: Promocion): CompraBuilder
+  +conMedioPago(m: MedioPago): CompraBuilder
+  +build(): Compra
+}
+
+class EstadoPendiente <<State>> {
+  +pagar(compra: Compra): void
+  +cancelar(compra: Compra): void
+  +reembolsar(compra: Compra): void
+}
+
+class EstadoPagada <<State>> {
+  +pagar(compra: Compra): void
+  +cancelar(compra: Compra): void
+  +reembolsar(compra: Compra): void
+}
+
+class EstadoCancelada <<State>> {
+  +pagar(compra: Compra): void
+  +cancelar(compra: Compra): void
+  +reembolsar(compra: Compra): void
+}
+
+class EstadoReembolsada <<State>> {
+  +pagar(compra: Compra): void
+  +cancelar(compra: Compra): void
+  +reembolsar(compra: Compra): void
+}
+
+class ReembolsoTotal <<Strategy>> {
+  +calcularReembolso(compra: Compra): double
+  +permiteCancelar(compra: Compra): boolean
+}
+
+class ReembolsoParcial80 <<Strategy>> {
+  +calcularReembolso(compra: Compra): double
+  +permiteCancelar(compra: Compra): boolean
+}
+
+class SinReembolso <<Strategy>> {
+  +calcularReembolso(compra: Compra): double
+  +permiteCancelar(compra: Compra): boolean
+}
+
+class ReembolsoPorCancelacionCine <<Strategy>> {
+  +calcularReembolso(compra: Compra): double
+  +permiteCancelar(compra: Compra): boolean
+}
+
+class AcumuladorPuntosObserver <<Observer>> {
+  -valorPorPunto: double
+  +actualizar(compra: Compra, evento: String): void
+}
+
+class RegistroMovimientoObserver <<Observer>> {
+  +actualizar(compra: Compra, evento: String): void
+}
+
+class EstadisticasObserver <<Observer>> {
+  +actualizar(compra: Compra, evento: String): void
+}
+
+class ReembolsoMasivoObserver <<Observer>> {
+  +funcionCancelada(funcion: Funcion): void
+}
+
+' ==========================================================
+' 9. REPORTES (ADAPTER)
+' ==========================================================
+class Reporte {
+  -titulo: String
+  -fechaGeneracion: LocalDateTime
+  -fechaInicio: LocalDate
+  -fechaFin: LocalDate
+  -tipo: TipoReporte
+  -registros: List<String>
+  -valorTotal: double
+  +obtenerValorTotalDeCompras(): double
+  +obtenerEntradasVendidasPorPeliculaFuncion(): Map<String, Integer>
+  +obtenerOcupacionSalas(): Map<String, Double>
+  +obtenerProductosVendidos(): Map<String, Integer>
+  +obtenerRecargasRealizadas(): List<Movimiento>
+  +obtenerCancelacionesYReembolsos(): List<Compra>
+  +obtenerPuntosCliente(c: Cliente): int
+  +generarReporteModoLectura(): String
+  +exportar(exportador: ExportadorReporte, ruta: String): void
+}
+
+class AdaptadorTXT <<Adapter>> {
+  +exportar(reporte: Reporte, ruta: String): void
+}
+
+class AdaptadorPDF <<Adapter>> {
+  -libreria: LibreriaPDF
+  +exportar(reporte: Reporte, ruta: String): void
+}
+
+class LibreriaPDF <<Adaptee>> {
+  +crearDocumento(): void
+  +agregarTexto(texto: String): void
+  +guardar(ruta: String): void
+}
+
+' ==========================================================
+' 10. FACADE Y CONTROLADOR (MVC)
+' ==========================================================
+class CinemaFacade <<Facade>> {
+  +consultarCartelera(): List<Funcion>
+  +reservarAsientos(c: Cliente, f: Funcion, codigos: List<String>): void
+  +confirmarCompra(c: Cliente, f: Funcion, productos: List<Producto>): Compra
+  +cancelarCompra(c: Compra): void
+  +cancelarFuncion(f: Funcion): void
+  +redimirPuntos(c: Cliente, item: Redimible): void
+  +recargarTarjeta(a: Administrador, c: Cliente, monto: double): void
+  +generarReporte(tipo: TipoReporte, ini: LocalDate, fin: LocalDate): Reporte
+}
+
+class ControladorCompra <<Controller JavaFX>> {
+  +onSeleccionarAsiento(): void
+  +onConfirmarCompra(): void
+  +onCancelarCompra(): void
+}
+
+' ==========================================================
+' 11. EXCEPCIONES DEL DOMINIO
+' ==========================================================
+class CinemaUQException <<exception>>
+class SaldoInsuficienteException <<exception>>
+class TarjetaInactivaException <<exception>>
+class AsientoOcupadoException <<exception>>
+class CancelacionNoPermitidaException <<exception>>
+class PuntosInsuficientesException <<exception>>
+class ReembolsoDuplicadoException <<exception>>
+
+' ==========================================================
+' ==========================================================
+'  RELACIONES (TODAS AL FINAL)
+' ==========================================================
+' ==========================================================
+
+' ---- Herencia: Usuarios ----
+Usuario <|-- Cliente
+Usuario <|-- Administrador
+
+' ---- Herencia: Productos (Composite) ----
+Producto <|-- ProductoSimple
+Producto <|-- Combo
+Combo "1" o-- "1..*" Producto : componentes
+
+' ---- Herencia: Entradas y fábricas (Factory Method) ----
+Entrada <|-- Entrada2D
+Entrada <|-- Entrada3D
+Entrada <|-- EntradaIMAX
+FabricaEntrada <|-- FabricaEntrada2D
+FabricaEntrada <|-- FabricaEntrada3D
+FabricaEntrada <|-- FabricaEntradaIMAX
+FabricaEntrada ..> Entrada : <<crea>>
+FabricaEntrada2D ..> Entrada2D : <<crea>>
+FabricaEntrada3D ..> Entrada3D : <<crea>>
+FabricaEntradaIMAX ..> EntradaIMAX : <<crea>>
+
+' ---- Implementación de interfaces ----
+Producto ..|> Redimible
+Entrada ..|> Redimible
+TarjetaVirtual ..|> MedioPago
+TarjetaVirtualProxy ..|> MedioPago
+EstadoPendiente ..|> EstadoCompra
+EstadoPagada ..|> EstadoCompra
+EstadoCancelada ..|> EstadoCompra
+EstadoReembolsada ..|> EstadoCompra
+ReembolsoTotal ..|> PoliticaReembolso
+ReembolsoParcial80 ..|> PoliticaReembolso
+SinReembolso ..|> PoliticaReembolso
+ReembolsoPorCancelacionCine ..|> PoliticaReembolso
+AcumuladorPuntosObserver ..|> ObservadorCompra
+RegistroMovimientoObserver ..|> ObservadorCompra
+EstadisticasObserver ..|> ObservadorCompra
+ReembolsoMasivoObserver ..|> ObservadorFuncion
+AdaptadorTXT ..|> ExportadorReporte
+AdaptadorPDF ..|> ExportadorReporte
+
+' ---- Excepciones ----
+CinemaUQException <|-- SaldoInsuficienteException
+CinemaUQException <|-- TarjetaInactivaException
+CinemaUQException <|-- AsientoOcupadoException
+CinemaUQException <|-- CancelacionNoPermitidaException
+CinemaUQException <|-- PuntosInsuficientesException
+CinemaUQException <|-- ReembolsoDuplicadoException
+
+' ---- Singleton: Cine y sus agregados ----
+Cine --> Cine : -instancia
+Cine "1" o-- "0..*" Cliente : clientes
+Cine "1" o-- "1..*" Administrador : administradores
+Cine "1" *-- "1..*" Sala : salas
+Cine "1" o-- "0..*" Pelicula : cartelera
+Cine "1" o-- "0..*" Funcion : funciones
+Cine "1" o-- "0..*" Producto : confitería
+Cine "1" o-- "0..*" Promocion : promociones
+Cine "1" o-- "0..*" Compra : compras
+
+' ---- Sala, funciones y asientos ----
+Sala "1" *-- "1..*" Asiento : asientos
+Funcion "0..*" --> "1" Pelicula : proyecta
+Funcion "0..*" --> "1" Sala : se realiza en
+Funcion --> EstadoFuncion
+Funcion --> TipoFuncion
+Funcion ..> Asiento : reserva por código
+Funcion "1" o-- "0..*" ObservadorFuncion : observadores
+Pelicula --> ClasificacionEdad
+Promocion "0..*" --> "0..*" Funcion : aplica a
+Promocion "0..*" --> "0..*" Producto : aplica a
+
+' ---- Cliente, tarjeta, movimientos y puntos ----
+Cliente "1" *-- "1" TarjetaVirtual : tarjeta
+Cliente "1" *-- "1" CuentaPuntos : puntos
+Cliente "1" --> "0..*" Compra : historial
+CuentaPuntos "1" *-- "0..*" PuntosAcumulados : lotes
+TarjetaVirtual --> EstadoTarjeta
+TarjetaVirtual "1" *-- "0..*" Movimiento : movimientos
+Movimiento --> TipoMovimiento
+TarjetaVirtualProxy --> "1" TarjetaVirtual : tarjetaReal
+TarjetaVirtualProxy ..> SaldoInsuficienteException : <<throws>>
+TarjetaVirtualProxy ..> TarjetaInactivaException : <<throws>>
+
+' ---- Entradas ----
+Entrada "0..*" --> "1" Funcion
+Entrada "0..*" --> "1" Asiento
+Funcion ..> AsientoOcupadoException : <<throws>>
+
+' ---- Compra (Builder / State / Strategy / Observer) ----
+CompraBuilder ..> Compra : <<construye>>
+CompraBuilder ..> FabricaEntrada : usa
+Compra "1" *-- "1..*" Entrada : entradas
+Compra "1" o-- "0..*" Producto : productos
+Compra "0..*" --> "1" Cliente : realizada por
+Compra "0..*" --> "0..1" Promocion : descuento
+Compra "1" --> "1" EstadoCompra : estado actual
+Compra "1" --> "1" PoliticaReembolso : política
+Compra "1" --> "1" MedioPago : pagada con
+Compra "1" --> "0..*" Movimiento : genera
+Compra "1" o-- "0..*" ObservadorCompra : observadores
+Compra ..> CancelacionNoPermitidaException : <<throws>>
+Compra ..> ReembolsoDuplicadoException : <<throws>>
+
+' ---- Observers ----
+AcumuladorPuntosObserver ..> CuentaPuntos : acumula
+RegistroMovimientoObserver ..> Movimiento : registra
+EstadisticasObserver ..> Reporte : actualiza métricas
+ReembolsoMasivoObserver ..> Compra : reembolsa 100%
+
+' ---- Redención con puntos ----
+CuentaPuntos ..> PuntosInsuficientesException : <<throws>>
+Cliente ..> Redimible : redime
+
+' ---- Administrador ----
+Administrador ..> Cine : gestiona
+Administrador ..> TarjetaVirtual : recarga
+Administrador ..> Reporte : genera
+Administrador ..> Funcion : cancela
+
+' ---- Reportes (Adapter) ----
+Reporte --> TipoReporte
+Reporte --> "1" ExportadorReporte : exportador
+Reporte ..> Compra : consulta
+Reporte ..> Movimiento : consulta
+AdaptadorPDF --> "1" LibreriaPDF : adaptee
+
+' ---- Facade y Controlador (MVC) ----
+ControladorCompra --> CinemaFacade : usa
+CinemaFacade ..> Cine
+CinemaFacade ..> CompraBuilder
+CinemaFacade ..> FabricaEntrada
+CinemaFacade ..> TarjetaVirtualProxy
+CinemaFacade ..> Reporte
+CinemaFacade ..> CuentaPuntos
+
+@enduml
