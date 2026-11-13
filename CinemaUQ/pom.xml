@@ -50,7 +50,7 @@
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>0.0.8</version>
                 <configuration>
-                    <mainClass>co.uniquindio.edu.co.cinemauq.Launcher</mainClass>
+                    <mainClass>co.uniquindio.edu.co.cinemauq.Model.Launcher</mainClass>
                 </configuration>
             </plugin>
 
