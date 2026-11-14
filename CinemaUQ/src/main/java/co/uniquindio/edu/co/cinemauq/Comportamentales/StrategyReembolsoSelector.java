@@ -13,7 +13,8 @@ public class StrategyReembolsoSelector {
     //esto nos ayudara mas tarde para calcular si se reembolsa o no
     private static final long MINUTOS_MINIMOS = 2*60;
 
-    public StrategyReembolso Seleccionar(Compra compra, LocalDateTime ahora){
+    //esta wea tiene que ser estatica si no no deja instanciarla en statePagada
+    public static StrategyReembolso Seleccionar(Compra compra, LocalDateTime ahora){
 
         //esto es complejo pero basicamente este metodo no depende de entradas solo es de confiteria asi que regresa el 100%
         if(compra.getEntradas().isEmpty()){
@@ -38,9 +39,12 @@ public class StrategyReembolsoSelector {
         //y si es menos de 2h ya no se permite reembolsar
         if(minutos > MINUTOS_PARA_TOTAL){
             return new StrategyReembolsoTotal();
-        }if(minutos >= MINUTOS_MINIMOS){
-            return new StrategyReembolsoTotal();
         }
+
+        if(minutos >= MINUTOS_MINIMOS){
+            return new StrategyReembolsoParcial();
+        }
+
         return new StrategyReembolsoNoPermitido();
     }
 }

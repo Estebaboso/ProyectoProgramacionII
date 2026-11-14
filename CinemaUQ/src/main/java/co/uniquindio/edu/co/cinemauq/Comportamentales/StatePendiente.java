@@ -9,11 +9,20 @@ public class StatePendiente implements StateCompra {
         this.compra = compra;
     }
 
-    public Compra getCompra() {
-        return compra;
+    @Override
+    public void cancelar(){
+        System.out.println("La compra pendiente ha sido cancelada.");
+
+        compra.setEstado(new StateCancelada(compra));
     }
 
-    public void setCompra(Compra compra) {
-        this.compra = compra;
+    @Override
+    public void pagar(){
+        System.out.println("La compra esta pendiente de pago");
+
+        //aqui iria codigo para conectar con el proxy i guess antes de que pase a pagada
+
+        compra.setEstado(new StatePagada(compra));
+        System.out.println("La compra se realizo correctamente");
     }
 }

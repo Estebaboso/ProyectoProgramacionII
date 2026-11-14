@@ -1,8 +1,6 @@
 package co.uniquindio.edu.co.cinemauq.Model;
 
-import co.uniquindio.edu.co.cinemauq.Comportamentales.ObserverEvento;
-import co.uniquindio.edu.co.cinemauq.Comportamentales.StateCompra;
-import co.uniquindio.edu.co.cinemauq.Comportamentales.StrategyReembolso;
+import co.uniquindio.edu.co.cinemauq.Comportamentales.*;
 import co.uniquindio.edu.co.cinemauq.Estructurales.Producto;
 
 import java.time.LocalDateTime;
@@ -32,6 +30,7 @@ public class Compra {
         this.productos = productos;
         this.promocion = promocion;
         this.observadores = new ArrayList<>();
+        this.estado = new StatePendiente(this);
     }
 
     public int getId() {
