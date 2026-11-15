@@ -30,7 +30,16 @@ public class Combo implements Producto {
 
     @Override
     public double obtenerPrecio() {
-        return obtenerPrecio();  //temporal
+        double valorTotal = 0;
+        for(Producto p : listaDeProductos){
+            valorTotal += p.obtenerPrecio();
+        }
+        return valorTotal;
+    }
+
+    @Override
+    public int obtenerPuntos() {
+        return 50;
     }
 
     public int getId() {
