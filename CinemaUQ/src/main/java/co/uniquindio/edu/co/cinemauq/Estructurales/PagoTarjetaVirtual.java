@@ -11,11 +11,12 @@ public class PagoTarjetaVirtual implements ProcesadorPago {
     }
 
     @Override
-    public void cobrarPago(TarjetaVirtual tarjeta, Usuario usuario, double monto) {
+    public boolean cobrarPago(TarjetaVirtual tarjeta, Usuario usuario, double monto) {
         tarjeta.setSaldo(tarjeta.getSaldo() - monto);
 
         System.out.println("[PAGO] Cobro de " + monto + " realizado a " + usuario.getNombre()
                 + " Saldo restante: " + tarjeta.getSaldo());
+        return true;
     }
 
 

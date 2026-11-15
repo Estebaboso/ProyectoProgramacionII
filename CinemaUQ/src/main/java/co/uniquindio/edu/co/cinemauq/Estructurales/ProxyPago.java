@@ -15,12 +15,12 @@ public class ProxyPago implements ProcesadorPago {
 
     // Puede estar separado pero realmente no interesa, si se incumple cualquiera de las dos no se puede hacer la transaccion
     @Override
-    public void cobrarPago(TarjetaVirtual tarjeta, Usuario usuario, double monto) {
+    public boolean cobrarPago(TarjetaVirtual tarjeta, Usuario usuario, double monto) {
         System.out.println("[REPORTE AUDITORIA PARA] " + usuario.getNombre() + " por el saldo de " + tarjeta.getSaldo());
 
         if (tarjeta.getEstadoTarjeta() == EstadoTarjetaVirtual.NO_ACTIVA || tarjeta.getSaldo() < 0) { //El 0 es temporal luego se cambia
             System.out.println("Transacción denegada para el usuario " + usuario.getNombre() + ". No cumple con las condiciones");
-            return;
+            return false;
         }
 
         //Revisa si no existe un procesador de pago todavia y lo crea en PagoTarjetaVirtual porque ahi se realiza el cobro
@@ -29,7 +29,7 @@ public class ProxyPago implements ProcesadorPago {
             procesadorReal = new PagoTarjetaVirtual();
         }
 
-        procesadorReal.cobrarPago(tarjeta, usuario, monto);
+        return procesadorReal.cobrarPago(tarjeta, usuario, monto);
     }
         public TarjetaVirtual getTarjeta () {
             return tarjeta;
