@@ -37,6 +37,11 @@ public class Combo implements Producto {
         return valorTotal;
     }
 
+    @Override
+    public int obtenerPuntos() {
+        return 50;
+    }
+
     public int getId() {
         return id;
     }

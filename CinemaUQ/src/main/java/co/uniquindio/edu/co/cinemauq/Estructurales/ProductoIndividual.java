@@ -23,6 +23,11 @@ public class ProductoIndividual implements Producto {
         return precio;   //temporal
     }
 
+    @Override
+    public int obtenerPuntos() {
+        return 50;
+    }
+
     public String getNombre() {
         return nombre;
     }

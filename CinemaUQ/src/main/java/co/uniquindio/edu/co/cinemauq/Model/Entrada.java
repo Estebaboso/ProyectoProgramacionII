@@ -13,6 +13,12 @@ public abstract class Entrada {
         this.precio = precio;
     }
 
+    //Metodo para obtener los puntos luego en el observer
+
+    public int obtenerPuntos() {
+        return 100;
+    }
+
     public int getId() {
         return id;
     }
