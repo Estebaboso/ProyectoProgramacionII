@@ -56,4 +56,12 @@ public class Promocion {
     public void setFechaFin(LocalDate fechaFin) {
         this.fechaFin = fechaFin;
     }
+
+
+    public double aplicarDescuento(double monto) {
+        return monto - (monto * descuento / 100);
+    }
 }
+
+
+

@@ -35,6 +35,17 @@ public class CinemaUQ {
         this.compras = new ArrayList<>();
     }
 
+    //este metodo pertenece solo a la clase nadie puede crear el objeto desde afuera
+    //el cine con ese condicional solo se crea una sola vez luego es reutilizable
+    //la palabra synchronized lo que hace es crear un afila de espera si se nesesita dos llamados por interfaz o por reportes
+    //solo se aplica una sola instancea
+    public static synchronized CinemaUQ getInstance() {
+        if (instancia == null) {
+            instancia = new CinemaUQ();
+        }
+        return instancia;
+    }
+
     public List<Pelicula> getPeliculas() {
         return peliculas;
     }

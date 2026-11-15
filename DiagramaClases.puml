@@ -1,0 +1,379 @@
+@startuml CinemaUQ_ClassDiagram
+' ==========================================================================
+'  CinemaUQ - Diagrama de clases (versión alineada con el paquete Model)
+'  Proyecto final Programación II - Universidad del Quindío
+' --------------------------------------------------------------------------
+'  ESTADO: diagrama PREVIO a los patrones de diseño.
+'          No incluye clases de patrones (Builder, Factory, Proxy, State, etc.)
+'          para no interferir con la lógica que implementan los compañeros.
+'
+'  CÓDIGO DE COLORES (ver legend al final):
+'    - Gris     : la clase existe en el paquete Model (confirmado por el IDE).
+'    - Naranja  : existe en Model, pero sus atributos/métodos son PROVISIONALES
+'                 y deben ajustarse al .java real (Entrada, LotePuntos).
+'    - Amarillo : la clase está en el diagrama base pero NO aparece en Model;
+'                 su ubicación (Creacionales / Estructurales / Comportamentales)
+'                 está POR CONFIRMAR (Cine, Producto, EstadoCompra).
+'
+'  CAMBIOS RESPECTO AL DIAGRAMA ANTERIOR:
+'    1. Se agregan Entrada, LotePuntos y RestriccionPelicula (existen en Model).
+'    2. EstadoTarjeta pasa a llamarse EstadoTarjetaVirtual.
+'    3. Pelicula.restriccion pasa de String a RestriccionPelicula.
+'    4. Compra se relaciona con Entrada (composición); la relación directa
+'       Compra -> Asiento queda comentada (ver sección de relaciones).
+'    5. Funcion <-> Asiento: se corrige la multiplicidad (muchos a muchos,
+'       porque un asiento puede reservarse en varias funciones).
+'    6. Cliente se compone de LotePuntos (puntos con fecha de vigencia).
+' ==========================================================================
+
+top to bottom direction
+skinparam linetype ortho
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+skinparam nodesep 70
+skinparam ranksep 80
+
+hide empty members
+' Las clases confirmadas en Model no muestran estereotipo (menos ruido visual)
+hide <<Model>> stereotype
+
+skinparam class {
+  BackgroundColor<<Model>> #F2F2F2
+  BackgroundColor<<Provisional>> #FFE3BF
+  BackgroundColor<<Pendiente>> #FFF7A8
+}
+
+' ==========================================================================
+'  RAÍZ DEL SISTEMA
+' ==========================================================================
+
+' Cine: agregado raíz. Concentra todas las colecciones del negocio.
+' Ubicación por confirmar (no aparece en Model; probablemente en Creacionales).
+class Cine <<Pendiente>> {
+  -nombre: String
+  -direccion: String
+  -ciudad: String
+  -telefono: String
+  -correo: String
+  -gerente: String
+  +registrarCliente(cliente: Cliente): void
+  +registrarAdministrador(admin: Administrador): void
+  +agregarPelicula(pelicula: Pelicula): void
+  +agregarSala(sala: Sala): void
+  +agregarFuncion(funcion: Funcion): void
+  +agregarProducto(producto: Producto): void
+  +agregarPromocion(promocion: Promocion): void
+  +registrarCompra(compra: Compra): void
+  +buscarPelicula(id: String): Pelicula
+  +consultarCartelera(): List<Funcion>
+}
+
+' ==========================================================================
+'  MÓDULO CORE / LOGÍSTICA  (películas, salas, asientos, funciones)
+' ==========================================================================
+together {
+
+  ' Ciclo de vida de una función.
+  enum EstadoFuncion <<Model>> {
+    PROGRAMADA
+    EN_CURSO
+    FINALIZADA
+    CANCELADA
+  }
+
+  ' Formato de proyección. Determina el tipo/precio de la Entrada.
+  enum TipoFuncion <<Model>> {
+    DOS_D
+    TRES_D
+    IMAX
+  }
+
+  ' Clasificación por edades. Los valores reales están en
+  ' RestriccionPelicula.java (completar al copiar el diagrama a la entrega).
+  enum RestriccionPelicula <<Model>> {
+  }
+
+  class Pelicula <<Model>> {
+    -id: String
+    -nombre: String
+    -genero: String
+    -duracion: int
+    -restriccion: RestriccionPelicula
+  }
+
+  class Sala <<Model>> {
+    -numSala: int
+    -cantAsientos: int
+    +getAsientos(): List<Asiento>
+  }
+
+  ' Asiento no guarda estado: su disponibilidad depende de cada Funcion.
+  class Asiento <<Model>> {
+    -codigo: String
+    -fila: char
+    -columna: int
+  }
+
+  ' Funcion guarda los códigos de asientos reservados (fuente de verdad).
+  ' horaFin = horaInicio + duración de la película + margen de aseo.
+  class Funcion <<Model>> {
+    -precio: double
+    -fecha: LocalDate
+    -horaInicio: LocalTime
+    -horaFin: LocalTime
+    -estado: EstadoFuncion
+    -tipoFuncion: TipoFuncion
+    -codigosAsientosReservados: Set<String>
+    +calcularHoraFin(): LocalTime
+    +estaDisponible(codigoAsiento: String): boolean
+    +reservarAsiento(codigoAsiento: String): void
+    +liberarAsiento(codigoAsiento: String): void
+    +cancelar(): void
+  }
+}
+
+' ==========================================================================
+'  MÓDULO VENTAS / MARKETING  (compras, entradas, productos, reportes)
+' ==========================================================================
+together {
+
+  ' Ubicación por confirmar (probablemente Comportamentales, patrón State).
+  ' Nota: el enunciado también contempla el estado REEMBOLSADA; verificar
+  ' si el código de los compañeros ya lo incluye.
+  enum EstadoCompra <<Pendiente>> {
+    PENDIENTE
+    PAGADA
+    CANCELADA
+  }
+
+  class Promocion <<Model>> {
+    -id: String
+    -nombre: String
+    -descuento: double
+    -fechaInicio: LocalDate
+    -fechaFin: LocalDate
+    +estaVigente(): boolean
+    +aplicarDescuento(monto: double): double
+  }
+
+  ' Ubicación por confirmar (probablemente Estructurales, patrón Composite
+  ' junto con el Combo).
+  class Producto <<Pendiente>> {
+    -id: String
+    -nombre: String
+    -precio: double
+    -puntosRequeridos: int
+    +getPrecio(): double
+    +getPuntosRequeridos(): int
+  }
+
+  ' Compra: zona de contacto con los patrones de los compañeros
+  ' (estado de la compra, coordinación del pago, reembolsos, notificaciones).
+  class Compra <<Model>> {
+    -fecha: LocalDate
+    -hora: LocalTime
+    -cantidadEntradas: int
+    -iva: double
+    -total: double
+    -estado: EstadoCompra
+    +calcularTotal(): double
+    +pagar(): void
+    +cancelar(): void
+  }
+
+  ' Entrada: PROVISIONAL. Existe en Model; atributos por confirmar con
+  ' Entrada.java (puede ser abstracta o tener subclases por formato).
+  class Entrada <<Provisional>> {
+    -precio: double
+    +getPrecio(): double
+  }
+
+  class Reporte <<Model>> {
+    -titulo: String
+    -fechaGeneracion: LocalDateTime
+    -fechaInicio: LocalDate
+    -fechaFin: LocalDate
+    -totalVentas: double
+    -totalEntradasVendidas: int
+    -totalRecargas: double
+    -totalReembolsos: double
+    +calcularTotales(compras: List<Compra>, movimientos: List<Movimiento>): void
+    +generarTexto(): String
+  }
+}
+
+' ==========================================================================
+'  MÓDULO DE USUARIOS  (clientes, administradores, tarjeta, puntos)
+' ==========================================================================
+together {
+
+  ' Renombrado: antes EstadoTarjeta.
+  enum EstadoTarjetaVirtual <<Model>> {
+    ACTIVA
+    INACTIVA
+  }
+
+  enum TipoMovimiento <<Model>> {
+    RECARGA
+    PAGO
+    REEMBOLSO
+  }
+
+  abstract class Usuario <<Model>> {
+    -id: String
+    -nombre: String
+    -telefono: String
+    +getId(): String
+    +getNombre(): String
+    +getTelefono(): String
+    +setNombre(nombre: String): void
+    +setTelefono(telefono: String): void
+  }
+
+  ' Observación: numTarjeta duplica la información de la composición con
+  ' TarjetaVirtual. Se deja tal como está en el código actual.
+  class Cliente <<Model>> {
+    -numTarjeta: String
+    -contrasena: String
+    -correo: String
+    -puntos: int
+    +iniciarSesion(correo: String, contrasena: String): boolean
+    +consultarSaldo(): double
+    +consultarPuntos(): int
+    +acumularPuntos(cantidad: int): void
+    +redimirPuntos(cantidad: int): boolean
+    +revisarHistorialCompras(): List<Compra>
+  }
+
+  class Administrador <<Model>> {
+    -contrasena: String
+    +iniciarSesion(id: String, contrasena: String): boolean
+    +recargarTarjeta(cliente: Cliente, monto: double): void
+    +cancelarFuncion(funcion: Funcion): void
+    +generarReporte(inicio: LocalDate, fin: LocalDate): Reporte
+  }
+
+  class TarjetaVirtual <<Model>> {
+    -saldo: double
+    -estado: EstadoTarjetaVirtual
+    +recargar(monto: double): Movimiento
+    +pagar(monto: double): Movimiento
+    +reembolsar(monto: double): Movimiento
+    +tieneSaldoSuficiente(monto: double): boolean
+    +getSaldo(): double
+  }
+
+  class Movimiento <<Model>> {
+    -monto: double
+    -fecha: LocalDateTime
+    -tipoMovimiento: TipoMovimiento
+  }
+
+  ' LotePuntos: PROVISIONAL. Cada acumulación conserva su fecha de obtención
+  ' y vence al año (regla del enunciado). Ajustar a LotePuntos.java.
+  class LotePuntos <<Provisional>> {
+    -cantidad: int
+    -fechaObtencion: LocalDate
+    -fechaVencimiento: LocalDate
+    +estaVencido(): boolean
+  }
+}
+
+' ==========================================================================
+'  RELACIONES (todas al final, agrupadas por módulo)
+' ==========================================================================
+
+' --------------------------------------------------------------------------
+'  Líneas ocultas: solo sirven para alinear filas y columnas del diagrama
+' --------------------------------------------------------------------------
+Cine -[hidden]right- Usuario
+Pelicula -[hidden]right- Sala
+Administrador -[hidden]right- Cliente
+Reporte -[hidden]right- TarjetaVirtual
+EstadoFuncion -[hidden]right- TipoFuncion
+TipoFuncion -[hidden]right- EstadoCompra
+EstadoCompra -[hidden]right- Movimiento
+
+' --------------------------------------------------------------------------
+'  Herencia
+' --------------------------------------------------------------------------
+Usuario <|-down- Cliente
+Usuario <|-down- Administrador
+
+' --------------------------------------------------------------------------
+'  Cine -> módulos (el cine agrupa todo el negocio)
+' --------------------------------------------------------------------------
+Cine "1" *-down- "1..*" Sala : salas
+Cine "1" o-down- "0..*" Pelicula : cartelera
+Cine "1" o-down- "0..*" Funcion : funciones
+Cine "1" o-down- "0..*" Promocion : promociones
+Cine "1" o-down- "0..*" Producto : productos
+Cine "1" o-down- "0..*" Compra : compras
+Cine "1" o-down- "1..*" Administrador : administradores
+Cine "1" o-down- "0..*" Cliente : clientes
+
+' --------------------------------------------------------------------------
+'  Módulo Core / Logística
+' --------------------------------------------------------------------------
+Funcion "0..*" -up-> "1" Pelicula : proyecta
+Funcion "0..*" -up-> "1" Sala : se realiza en
+Sala "1" *-down- "1..*" Asiento : asientos
+' Funcion reserva asientos solo por su código (Set<String>), de ahí la
+' dependencia punteada. Muchos a muchos: un asiento puede reservarse en
+' varias funciones distintas.
+Funcion "0..*" .left.> "0..*" Asiento : reserva (por código)
+Funcion -down-> EstadoFuncion
+Funcion -down-> TipoFuncion
+Pelicula -down-> RestriccionPelicula
+
+' --------------------------------------------------------------------------
+'  Módulo Ventas / Marketing
+' --------------------------------------------------------------------------
+Promocion "0..*" -right-> "0..*" Producto : aplica a
+Promocion "0..*" -down-> "0..*" Funcion : aplica a
+Compra "0..*" -up-> "0..1" Promocion : descuento
+Compra "0..*" o-up- "0..*" Producto : productos
+Compra "0..*" -left-> "1" Funcion : para
+Compra -down-> EstadoCompra
+
+' Una compra contiene una o más entradas; cada entrada es para una función
+' y un asiento concreto. (Por confirmar contra Entrada.java.)
+Compra "1" *-down- "1..*" Entrada : entradas
+Entrada "0..*" -up-> "1" Funcion : para
+Entrada "0..*" -left-> "1" Asiento : asiento
+
+' Relación anterior, reemplazada por Entrada. Descomentar SOLO si en el
+' código Compra todavía referencia los asientos directamente:
+' Compra "0..*" -[norank]-> "1..*" Asiento : asientos comprados
+
+Reporte "1" -left-> "0..*" Compra : consulta
+
+' --------------------------------------------------------------------------
+'  Módulo de Usuarios / Tarjeta / Puntos
+' --------------------------------------------------------------------------
+Cliente "1" *-down- "1" TarjetaVirtual : tarjeta
+Cliente "1" *-down- "0..*" LotePuntos : lotes de puntos
+TarjetaVirtual "1" *-down- "0..*" Movimiento : movimientos
+TarjetaVirtual -right-> EstadoTarjetaVirtual
+Movimiento -right-> TipoMovimiento
+
+' --------------------------------------------------------------------------
+'  Relaciones entre módulos
+' --------------------------------------------------------------------------
+Cliente "1" -down-> "0..*" Compra : realiza
+Compra "1" -down-> "0..*" Movimiento : genera
+Administrador "1" -down-> "0..*" Reporte : genera
+Administrador "1" -down-> "0..*" Movimiento : registra recargas
+Reporte "1" -down-> "0..*" Movimiento : consulta
+
+' ==========================================================================
+'  LEYENDA
+' ==========================================================================
+legend right
+  |= Color |= Significado |
+  |<#F2F2F2>   | Existe en el paquete Model |
+  |<#FFE3BF>   | Existe en Model, miembros por confirmar |
+  |<#FFF7A8>   | No está en Model, ubicación por confirmar |
+endlegend
+
+@enduml

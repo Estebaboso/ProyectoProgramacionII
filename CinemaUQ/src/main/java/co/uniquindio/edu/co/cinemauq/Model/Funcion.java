@@ -1,13 +1,13 @@
 package co.uniquindio.edu.co.cinemauq.Model;
 
 import co.uniquindio.edu.co.cinemauq.Comportamentales.ObserverEvento;
-
+import co.uniquindio.edu.co.cinemauq.Creacionales.Prototipo;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Funcion {
+public class Funcion implements Prototipo<Funcion> {
     private int id;
     private Pelicula pelicula;
     private Sala sala;
@@ -111,5 +111,18 @@ public class Funcion {
 
     public void setObservadores(List<ObserverEvento> observadores) {
         this.observadores = observadores;
+    }
+    @Override
+    public Funcion clonar() {
+        return new Funcion(id, pelicula, sala, fecha, horaInicio, precio,
+                EstadoFuncion.ACTIVA, tipoFuncion);
+    }
+
+    public Funcion clonarPara(int nuevoId, LocalDate nuevaFecha, LocalTime nuevaHoraInicio) {
+        Funcion copia = clonar();
+        copia.setId(nuevoId);
+        copia.setFecha(nuevaFecha);
+        copia.setHoraInicio(nuevaHoraInicio);
+        return copia;
     }
 }
