@@ -9,6 +9,7 @@ import co.uniquindio.edu.co.cinemauq.Model.EstadoFuncion;
 import co.uniquindio.edu.co.cinemauq.Model.Funcion;
 import co.uniquindio.edu.co.cinemauq.Model.Promocion;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -103,6 +104,17 @@ public class CompraBuilder {
         }
         if (funcion.getEstadoFuncion() != EstadoFuncion.ACTIVA) {
             throw new CompraInvalidaExcepcion("La función no está disponible para la venta.");
+        }
+        LocalDateTime inicioFuncion = LocalDateTime.of(funcion.getFecha(), funcion.getHoraInicio());
+        if (inicioFuncion.isBefore(LocalDateTime.now())) {
+            throw new CompraInvalidaExcepcion("La función ya inició o ya finalizó.");
+        }
+
+        if (promocion != null) {
+            LocalDate hoy = LocalDate.now();
+            if (hoy.isBefore(promocion.getFechaInicio()) || hoy.isAfter(promocion.getFechaFin())) {
+                throw new CompraInvalidaExcepcion("La promoción no está vigente.");
+            }
         }
 
         Set<String> codigosEnLaCompra = new HashSet<>();
