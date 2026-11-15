@@ -20,7 +20,7 @@ public class StatePendiente implements StateCompra {
     }
 
     @Override
-    public void pagar(){
+    public boolean pagar(){
         System.out.println("La compra esta pendiente de pago");
 
         //primero se obtiene la tarjeta del cliente que esta realizando la compra
@@ -33,8 +33,10 @@ public class StatePendiente implements StateCompra {
         if(pagoRealizado){
             compra.setEstado(new StatePagada(compra));
             System.out.println("La compra se realizo correctamente");
+            return true;
         }else{
             System.out.println("No se puedo realizar el pago.");
+            return false;
         }
 
     }

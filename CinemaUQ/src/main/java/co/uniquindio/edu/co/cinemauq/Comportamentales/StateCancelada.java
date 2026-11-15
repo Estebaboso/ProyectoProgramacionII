@@ -11,8 +11,9 @@ public class StateCancelada implements StateCompra {
     }
 
     @Override
-    public void pagar(){
+    public boolean pagar(){
         System.out.println("no se puede comprar una compra cancelada");
+        return false;
     }
 
     @Override

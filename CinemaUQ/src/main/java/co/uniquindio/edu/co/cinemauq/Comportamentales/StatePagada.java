@@ -13,8 +13,9 @@ public class StatePagada implements StateCompra {
     }
 
     @Override
-    public void pagar(){
+    public boolean pagar(){
         System.out.println("Esta compra ya se encuentra pagada");
+        return false;
     }
 
     @Override
