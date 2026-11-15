@@ -6,14 +6,17 @@ public class StateCancelada implements StateCompra {
     private Compra compra;
 
     public StateCancelada(Compra compra) {
+
         this.compra = compra;
     }
 
-    public Compra getCompra() {
-        return compra;
+    @Override
+    public void pagar(){
+        System.out.println("no se puede comprar una compra cancelada");
     }
 
-    public void setCompra(Compra compra) {
-        this.compra = compra;
+    @Override
+    public void cancelar(){
+        System.out.println("La compra ya se encuentra cancelada.");
     }
 }

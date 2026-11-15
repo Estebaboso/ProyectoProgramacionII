@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="750.0" prefWidth="1106.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="co.uniquindio.edu.co.cinemauq.controller.GestionFuncionesController">
+
+    <children>
+
+        <Label layoutX="330.0" layoutY="13.0" style="-fx-font-size: 24px; -fx-font-weight: bold;" text="CINEMAUQ - GESTIÓN DE CARTELERA" />
+
+        <!-- PELICULAS -->
+        <VBox layoutX="25.0" layoutY="70.0" prefWidth="250.0" spacing="10">
+            <Label style="-fx-font-size:18px;" text="GESTION PELICULAS" underline="true" />
+            <TextField fx:id="txtIdPelicula" promptText="Identificación (ID)" />
+            <TextField fx:id="txtNombrePelicula" promptText="Nombre de la película" />
+            <TextField fx:id="txtGeneroPelicula" promptText="Género" />
+            <TextField fx:id="txtDuracionPelicula" promptText="Duración (minutos)" />
+            <ComboBox fx:id="cbRestriccionPelicula" prefWidth="250.0" promptText="Restricción de edad" />
+            <TextArea fx:id="txtSinopsisPelicula" prefHeight="80.0" promptText="Sinopsis" wrapText="true" />
+            <Button onAction="#registrarPelicula" style="-fx-background-color: #28a745; -fx-text-fill: white; -fx-font-weight: bold;" text="Registrar Película" />
+        </VBox>
+
+        <!-- SALAS -->
+        <VBox layoutX="325.0" layoutY="70.0" prefWidth="250.0" spacing="10">
+            <Label style="-fx-font-size:18px;" text="GESTION SALAS" underline="true" />
+            <TextField fx:id="txtNumeroSala" promptText="Número de sala" />
+            <TextField fx:id="txtFilasSala" promptText="Cantidad de filas" />
+            <TextField fx:id="txtColumnasSala" promptText="Asientos por fila" />
+            <Button onAction="#registrarSala" style="-fx-background-color: #28a745; -fx-text-fill: white; -fx-font-weight: bold;" text="Registrar Sala" />
+        </VBox>
+
+        <!-- FUNCIONES -->
+        <VBox layoutX="625.0" layoutY="70.0" prefWidth="250.0" spacing="10">
+            <Label style="-fx-font-size:18px;" text="GESTION FUNCIONES" underline="true" />
+            <TextField fx:id="txtIdFuncion" promptText="Identificación (ID)" />
+            <ComboBox fx:id="cbPeliculaFuncion" prefWidth="250.0" promptText="Película" />
+            <ComboBox fx:id="cbSalaFuncion" prefWidth="250.0" promptText="Sala" />
+            <DatePicker fx:id="dpFechaFuncion" prefWidth="250.0" promptText="Fecha de la función" />
+            <TextField fx:id="txtHoraInicioFuncion" promptText="Hora de inicio (HH:mm)" />
+            <TextField fx:id="txtPrecioFuncion" promptText="Precio" />
+            <ComboBox fx:id="cbTipoFuncion" prefWidth="250.0" promptText="Tipo de función" />
+            <ComboBox fx:id="cbEstadoFuncion" prefWidth="250.0" promptText="Estado" />
+            <Button onAction="#registrarFuncion" style="-fx-background-color: #28a745; -fx-text-fill: white; -fx-font-weight: bold;" text="Registrar Función" />
+        </VBox>
+
+        <!-- ACCIONES SOBRE FUNCION SELECCIONADA -->
+        <VBox layoutX="925.0" layoutY="70.0" prefWidth="156.0" spacing="10">
+            <Label style="-fx-font-size:18px;" text="ACCIONES" underline="true" />
+            <Button onAction="#cancelarFuncion" prefWidth="156.0" style="-fx-background-color: #dc3545; -fx-text-fill: white; -fx-font-weight: bold;" text="Cancelar Función" />
+        </VBox>
+
+        <!-- LISTADO DE FUNCIONES -->
+        <VBox layoutX="25.0" layoutY="470.0" prefWidth="1056.0" spacing="10">
+            <Label style="-fx-font-size:18px;" text="FUNCIONES PROGRAMADAS" underline="true" />
+            <TableView fx:id="tblFunciones" prefHeight="200.0" prefWidth="1056.0">
+                <columns>
+                    <TableColumn fx:id="colPelicula" prefWidth="250.0" text="Película" />
+                    <TableColumn fx:id="colSala" prefWidth="100.0" text="Sala" />
+                    <TableColumn fx:id="colFecha" prefWidth="150.0" text="Fecha" />
+                    <TableColumn fx:id="colHoraInicio" prefWidth="120.0" text="Hora inicio" />
+                    <TableColumn fx:id="colTipo" prefWidth="130.0" text="Tipo" />
+                    <TableColumn fx:id="colPrecio" prefWidth="130.0" text="Precio" />
+                    <TableColumn fx:id="colEstado" prefWidth="176.0" text="Estado" />
+                </columns>
+            </TableView>
+        </VBox>
+
+        <!-- BOTON VOLVER -->
+        <Button layoutX="25.0" layoutY="700.0" onAction="#volverMenuPrincipal" style="-fx-background-color: #6c757d; -fx-text-fill: white; -fx-font-weight: bold;" text="Volver al Menú Principal" />
+
+    </children>
+
+</AnchorPane>
