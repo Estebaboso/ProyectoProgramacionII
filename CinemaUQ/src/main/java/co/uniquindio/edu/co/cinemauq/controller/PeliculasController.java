@@ -108,26 +108,7 @@ public class PeliculasController {
 
     @FXML
     private void volverMenuPrincipal(ActionEvent event) {
-        try {
-            FXMLLoader loader = new FXMLLoader(
-                    getClass().getResource(
-                            "/co.uniquindio.edu.co.cinemauq/inicio-view.fxml"
-                    )
-            );
-
-            Scene scene = new Scene(loader.load());
-
-            Stage stage = (Stage) ((Node) event.getSource())
-                    .getScene().getWindow();
-
-            stage.setScene(scene);
-            stage.setTitle("CinemaUQ");
-            stage.show();
-
-        } catch (IOException e) {
-            mostrarMensaje("No se pudo regresar al menú principal.");
-            e.printStackTrace();
-        }
+        Navegacion.abrir(event, "menu-cliente-view.fxml");
     }
 
     private void mostrarMensaje(String mensaje) {

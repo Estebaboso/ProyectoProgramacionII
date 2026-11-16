@@ -1,7 +1,7 @@
 package co.uniquindio.edu.co.cinemauq;
 
 import co.uniquindio.edu.co.cinemauq.Creacionales.CinemaUQ;
-import co.uniquindio.edu.co.cinemauq.Model.Administrador;
+import co.uniquindio.edu.co.cinemauq.Model.*;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -9,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.time.LocalDate;
 
 public class HelloAplication extends Application {
 
@@ -27,8 +28,35 @@ public class HelloAplication extends Application {
                 "admin@cinemauq.com"
         );
 
-        // Agregar administrador
-        cinema.getAdministradores().add(adminDefault);
+        // Crear tarjeta virtual para el cliente
+        TarjetaVirtual tarjetaDefault = new TarjetaVirtual(
+                "TV001",
+                100000,
+                EstadoTarjetaVirtual.ACTIVA
+        );
+
+        // Crear cliente por defecto
+        Cliente clienteDefault = new Cliente(
+                "Cliente Prueba",
+                "02N",
+                "3009876543",
+                "Cliente123",
+                "cliente@cinemauq.com",
+                tarjetaDefault
+        );
+
+        // Asignar puntos de prueba al cliente
+        LotePuntos puntosDefault = new LotePuntos(
+                500,
+                LocalDate.now(),
+                LocalDate.now().plusYears(1)
+        );
+
+        clienteDefault.getLotesPuntos().add(puntosDefault);
+
+        // Registrar cliente
+        cinema.getClientes().add(clienteDefault);
+
 
         // Abrir pantalla inicial
         FXMLLoader loader = new FXMLLoader(

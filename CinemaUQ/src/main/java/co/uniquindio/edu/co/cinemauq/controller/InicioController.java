@@ -1,27 +1,19 @@
+
 package co.uniquindio.edu.co.cinemauq.controller;
 
-import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.event.ActionEvent;
-import javafx.stage.Stage;
-
-import java.io.IOException;
+import javafx.fxml.FXML;
 
 public class InicioController {
 
     @FXML
-    private void abrirLogin(ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(
-                getClass().getResource("/co.uniquindio.edu.co.cinemauq/login-view.fxml")
-        );
+    private void abrirLogin(ActionEvent event) {
+        Navegacion.abrir(event, "login-view.fxml");
+    }
 
-        Scene scene = new Scene(loader.load());
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        stage.setScene(scene);
-
+    @FXML
+    private void abrirRegistro(ActionEvent event) {
+        Navegacion.abrir(event, "registro-view.fxml");
     }
 
     @FXML

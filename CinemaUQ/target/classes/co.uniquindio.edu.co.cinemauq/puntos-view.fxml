@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.chart.*?>
+<AnchorPane prefHeight="750.0" prefWidth="1106.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="co.uniquindio.edu.co.cinemauq.controller.PuntosController">
+<children>
+<Label layoutX="25" layoutY="20" style="-fx-font-size:24px; -fx-font-weight:bold;" text="CINEMAUQ - PUNTOS Y REDENCIONES" />
+<VBox layoutX="25" layoutY="85" prefWidth="355" spacing="10">
+<Label style="-fx-font-size: 17px;" text="MIS PUNTOS" underline="true" />
+<Label fx:id="lblPuntosDisponibles" style="-fx-font-size:22px; -fx-font-weight:bold;" text="Puntos disponibles: 0" />
+<Button onAction="#actualizarPuntos" prefWidth="320" style="-fx-background-color: #007bff; -fx-text-fill: white; -fx-font-weight: bold;" text="Actualizar puntos" />
+<Label style="-fx-font-size: 17px;" text="REDIMIR PUNTOS" underline="true" />
+<ComboBox fx:id="cbTipoRedencion" promptText="Entradas, productos o combos" maxWidth="1.7976931348623157E308" />
+<ComboBox fx:id="cbElementoRedencion" promptText="Seleccionar elemento" maxWidth="1.7976931348623157E308" />
+<Label fx:id="lblPuntosNecesarios" text="Puntos necesarios: -" />
+<Button onAction="#redimirPuntos" prefWidth="320" style="-fx-background-color: #28a745; -fx-text-fill: white; -fx-font-weight: bold;" text="Redimir puntos" />
+<Label fx:id="lblMensajeRedencion" text="" wrapText="true" />
+<Button onAction="#volverMenu" prefWidth="320" style="-fx-background-color: #6c757d; -fx-text-fill: white; -fx-font-weight: bold;" text="Volver al menú" />
+</VBox>
+<VBox layoutX="415" layoutY="85" prefWidth="660" spacing="10">
+<Label style="-fx-font-size: 17px;" text="HISTORIAL Y VENCIMIENTOS" underline="true" />
+<TableView fx:id="tblLotesPuntos" prefHeight="480" prefWidth="1056"><columns><TableColumn fx:id="colFecha" prefWidth="150" text="Fecha" />
+<TableColumn fx:id="colPuntos" prefWidth="130" text="Puntos" />
+<TableColumn fx:id="colVencimiento" prefWidth="160" text="Vencimiento" />
+<TableColumn fx:id="colEstado" prefWidth="190" text="Estado" /></columns></TableView>
+</VBox>
+</children>
+</AnchorPane>

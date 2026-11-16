@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.chart.*?>
+<AnchorPane prefHeight="750.0" prefWidth="1106.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="co.uniquindio.edu.co.cinemauq.controller.ReportesVisualesController">
+<children>
+<Label layoutX="25" layoutY="20" style="-fx-font-size:24px; -fx-font-weight:bold;" text="CINEMAUQ - REPORTES VISUALES" />
+<VBox layoutX="25" layoutY="80" prefWidth="310" spacing="10">
+<Label style="-fx-font-size: 17px;" text="FILTROS DEL REPORTE" underline="true" />
+<ComboBox fx:id="cbTipoGrafico" promptText="Ventas, entradas, ocupación, productos o recargas" maxWidth="1.7976931348623157E308" />
+<ComboBox fx:id="cbTipoVisualizacion" promptText="Barras, pastel o líneas" maxWidth="1.7976931348623157E308" />
+<DatePicker fx:id="dpFechaInicio" promptText="Fecha inicial" maxWidth="1.7976931348623157E308" />
+<DatePicker fx:id="dpFechaFin" promptText="Fecha final" maxWidth="1.7976931348623157E308" />
+<Button onAction="#generarGrafico" prefWidth="300" style="-fx-background-color: #28a745; -fx-text-fill: white; -fx-font-weight: bold;" text="Generar gráfico" />
+<Button onAction="#volverMenu" prefWidth="300" style="-fx-background-color: #6c757d; -fx-text-fill: white; -fx-font-weight: bold;" text="Volver al menú" />
+</VBox>
+<VBox layoutX="365" layoutY="80" prefWidth="710" spacing="10">
+<Label style="-fx-font-size: 17px;" text="VISUALIZACIÓN" underline="true" />
+<StackPane prefHeight="560" prefWidth="700" style="-fx-border-color: #cccccc; -fx-border-width: 1;"><children><Label fx:id="lblSinGrafico" text="Selecciona un reporte y genera el gráfico" /><StackPane fx:id="panelGrafico" prefWidth="680" prefHeight="540" /></children></StackPane>
+</VBox>
+</children>
+</AnchorPane>

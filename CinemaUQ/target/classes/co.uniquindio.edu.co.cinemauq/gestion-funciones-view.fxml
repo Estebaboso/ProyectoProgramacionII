@@ -66,8 +66,8 @@
             </TableView>
         </VBox>
 
-        <!-- BOTON VOLVER -->
-        <Button layoutX="25.0" layoutY="700.0" onAction="#volverMenuPrincipal" style="-fx-background-color: #6c757d; -fx-text-fill: white; -fx-font-weight: bold;" text="Volver al Menú Principal" />
+           <!-- BOTON VOLVER -->
+        <Button layoutX="925.0" layoutY="141.0" onAction="#volverMenuPrincipal" style="-fx-background-color: #6c757d; -fx-text-fill: white; -fx-font-weight: bold;" text="Volver al Menú Principal" />
 
     </children>
 

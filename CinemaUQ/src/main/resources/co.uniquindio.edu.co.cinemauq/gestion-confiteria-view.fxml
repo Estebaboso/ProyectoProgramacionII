@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.chart.*?>
+<AnchorPane prefHeight="750.0" prefWidth="1106.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="co.uniquindio.edu.co.cinemauq.controller.GestionConfiteriaController">
+<children>
+<Label layoutX="25" layoutY="20" style="-fx-font-size:24px; -fx-font-weight:bold;" text="CINEMAUQ - CONFITERÍA Y PROMOCIONES" />
+<VBox layoutX="25" layoutY="75" prefWidth="300" spacing="10">
+<Label style="-fx-font-size: 17px;" text="PRODUCTOS" underline="true" />
+<TextField fx:id="txtIdProducto" promptText="ID del producto" />
+<TextField fx:id="txtNombreProducto" promptText="Nombre del producto" />
+<TextField fx:id="txtPrecioProducto" promptText="Precio" />
+<TextField fx:id="txtStockProducto" promptText="Cantidad disponible" />
+<Button onAction="#registrarProducto" prefWidth="300" style="-fx-background-color: #28a745; -fx-text-fill: white; -fx-font-weight: bold;" text="Registrar producto" />
+<Button onAction="#actualizarProducto" prefWidth="300" style="-fx-background-color: #007bff; -fx-text-fill: white; -fx-font-weight: bold;" text="Actualizar producto" />
+</VBox>
+<VBox layoutX="385" layoutY="75" prefWidth="300" spacing="10">
+<Label style="-fx-font-size: 17px;" text="COMBOS" underline="true" />
+<TextField fx:id="txtNombreCombo" promptText="Nombre del combo" />
+<TextField fx:id="txtPrecioCombo" promptText="Precio del combo" />
+<ComboBox fx:id="cbProductoCombo" promptText="Producto para agregar" maxWidth="1.7976931348623157E308" />
+<TextField fx:id="txtCantidadCombo" promptText="Cantidad del producto" />
+<Button onAction="#agregarAlCombo" prefWidth="300" style="-fx-background-color: #007bff; -fx-text-fill: white; -fx-font-weight: bold;" text="Agregar al combo" />
+<Button onAction="#guardarCombo" prefWidth="300" style="-fx-background-color: #28a745; -fx-text-fill: white; -fx-font-weight: bold;" text="Guardar combo" />
+</VBox>
+<VBox layoutX="745" layoutY="75" prefWidth="330" spacing="10">
+<Label style="-fx-font-size: 17px;" text="PROMOCIONES" underline="true" />
+<TextField fx:id="txtIdPromocion" promptText="ID promoción" />
+<TextField fx:id="txtNombrePromocion" promptText="Nombre" />
+<TextField fx:id="txtDescuento" promptText="Descuento (%)" />
+<DatePicker fx:id="dpInicio" promptText="Fecha de inicio" maxWidth="1.7976931348623157E308" />
+<DatePicker fx:id="dpFin" promptText="Fecha final" maxWidth="1.7976931348623157E308" />
+<Button onAction="#registrarPromocion" prefWidth="330" style="-fx-background-color: #28a745; -fx-text-fill: white; -fx-font-weight: bold;" text="Registrar promoción" />
+</VBox>
+<VBox layoutX="25" layoutY="415" prefWidth="1056" spacing="8">
+<Label style="-fx-font-size: 17px;" text="CATÁLOGO DE CONFITERÍA" underline="true" />
+<TableView fx:id="tblCatalogo" prefHeight="210" prefWidth="1056"><columns><TableColumn fx:id="colId" prefWidth="120" text="ID" />
+<TableColumn fx:id="colNombre" prefWidth="340" text="Producto o combo" />
+<TableColumn fx:id="colTipo" prefWidth="180" text="Tipo" />
+<TableColumn fx:id="colPrecio" prefWidth="180" text="Precio" />
+<TableColumn fx:id="colStock" prefWidth="190" text="Cantidad" /></columns></TableView>
+<Button onAction="#eliminarSeleccionado" prefWidth="240" style="-fx-background-color: #dc3545; -fx-text-fill: white; -fx-font-weight: bold;" text="Eliminar seleccionado" />
+<Button onAction="#volverMenu" prefWidth="240" style="-fx-background-color: #6c757d; -fx-text-fill: white; -fx-font-weight: bold;" text="Volver al menú" />
+</VBox>
+</children>
+</AnchorPane>

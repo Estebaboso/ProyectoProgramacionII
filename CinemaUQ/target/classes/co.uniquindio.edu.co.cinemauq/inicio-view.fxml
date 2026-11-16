@@ -28,6 +28,10 @@
             style="-fx-background-color: #28a745; -fx-text-fill: white; -fx-font-weight: bold;"
             text="INICIAR SESIÓN" />
 
+    <Button onAction="#abrirRegistro" prefHeight="30.0" prefWidth="160.0"
+            style="-fx-background-color: #28a745; -fx-text-fill: white; -fx-font-weight: bold;"
+            text="REGISTRARME" />
+
 
     <Button onAction="#salir" prefHeight="30.0" prefWidth="160.0"
             style="-fx-background-color: #6c757d; -fx-text-fill: white; -fx-font-weight: bold;"

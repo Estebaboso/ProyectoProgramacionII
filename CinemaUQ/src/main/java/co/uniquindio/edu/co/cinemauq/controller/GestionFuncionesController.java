@@ -19,34 +19,59 @@ import java.time.LocalTime;
 
 public class GestionFuncionesController {
 
-    @FXML private TextField txtIdPelicula;
-    @FXML private TextField txtNombrePelicula;
-    @FXML private TextField txtGeneroPelicula;
-    @FXML private TextField txtDuracionPelicula;
-    @FXML private ComboBox<RestriccionPelicula> cbRestriccionPelicula;
-    @FXML private TextArea txtSinopsisPelicula;
+    @FXML
+    private TextField txtIdPelicula;
+    @FXML
+    private TextField txtNombrePelicula;
+    @FXML
+    private TextField txtGeneroPelicula;
+    @FXML
+    private TextField txtDuracionPelicula;
+    @FXML
+    private ComboBox<RestriccionPelicula> cbRestriccionPelicula;
+    @FXML
+    private TextArea txtSinopsisPelicula;
 
-    @FXML private TextField txtNumeroSala;
-    @FXML private TextField txtFilasSala;
-    @FXML private TextField txtColumnasSala;
+    @FXML
+    private TextField txtNumeroSala;
+    @FXML
+    private TextField txtFilasSala;
+    @FXML
+    private TextField txtColumnasSala;
 
-    @FXML private TextField txtIdFuncion;
-    @FXML private ComboBox<Pelicula> cbPeliculaFuncion;
-    @FXML private ComboBox<Sala> cbSalaFuncion;
-    @FXML private DatePicker dpFechaFuncion;
-    @FXML private TextField txtHoraInicioFuncion;
-    @FXML private TextField txtPrecioFuncion;
-    @FXML private ComboBox<TipoFuncion> cbTipoFuncion;
-    @FXML private ComboBox<EstadoFuncion> cbEstadoFuncion;
+    @FXML
+    private TextField txtIdFuncion;
+    @FXML
+    private ComboBox<Pelicula> cbPeliculaFuncion;
+    @FXML
+    private ComboBox<Sala> cbSalaFuncion;
+    @FXML
+    private DatePicker dpFechaFuncion;
+    @FXML
+    private TextField txtHoraInicioFuncion;
+    @FXML
+    private TextField txtPrecioFuncion;
+    @FXML
+    private ComboBox<TipoFuncion> cbTipoFuncion;
+    @FXML
+    private ComboBox<EstadoFuncion> cbEstadoFuncion;
 
-    @FXML private TableView<Funcion> tblFunciones;
-    @FXML private TableColumn<Funcion, String> colPelicula;
-    @FXML private TableColumn<Funcion, Integer> colSala;
-    @FXML private TableColumn<Funcion, LocalDate> colFecha;
-    @FXML private TableColumn<Funcion, LocalTime> colHoraInicio;
-    @FXML private TableColumn<Funcion, TipoFuncion> colTipo;
-    @FXML private TableColumn<Funcion, Double> colPrecio;
-    @FXML private TableColumn<Funcion, EstadoFuncion> colEstado;
+    @FXML
+    private TableView<Funcion> tblFunciones;
+    @FXML
+    private TableColumn<Funcion, String> colPelicula;
+    @FXML
+    private TableColumn<Funcion, Integer> colSala;
+    @FXML
+    private TableColumn<Funcion, LocalDate> colFecha;
+    @FXML
+    private TableColumn<Funcion, LocalTime> colHoraInicio;
+    @FXML
+    private TableColumn<Funcion, TipoFuncion> colTipo;
+    @FXML
+    private TableColumn<Funcion, Double> colPrecio;
+    @FXML
+    private TableColumn<Funcion, EstadoFuncion> colEstado;
 
     private CinemaUQ cinema;
     private ObservableList<Funcion> listaFunciones;
@@ -321,15 +346,7 @@ public class GestionFuncionesController {
     }
 
     @FXML
-    private void volverMenuPrincipal(ActionEvent event) throws IOException {
-
-        FXMLLoader loader = new FXMLLoader(
-                getClass().getResource("/co.uniquindio.edu.co.cinemauq/inicio-view.fxml")
-        );
-
-        Scene scene = new Scene(loader.load());
-
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        stage.setScene(scene);
+    private void volverMenuPrincipal(ActionEvent event) {
+        Navegacion.abrir(event, "menu-administrador-view.fxml");
     }
 }

@@ -1,7 +1,10 @@
 package co.uniquindio.edu.co.cinemauq.Model;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
+
 
 public class TarjetaVirtual {
     private String numTarjeta;
@@ -15,6 +18,21 @@ public class TarjetaVirtual {
         this.estadoTarjeta = estadoTarjeta;
         this.movimientos = new ArrayList<>();
     }
+
+    public boolean recargar(double monto) {
+        if (estadoTarjeta != EstadoTarjetaVirtual.ACTIVA || !Double.isFinite(monto) || monto <= 0
+                || !Double.isFinite(saldo + monto)) {
+            return false;
+        }
+
+        saldo += monto;
+
+        movimientos.add(new Movimiento(UUID.randomUUID().toString(), TipoMovimiento.RECARGA, monto,
+                LocalDateTime.now(), null));
+
+        return true;
+    }
+
 
     public String getNumTarjeta() {
         return numTarjeta;

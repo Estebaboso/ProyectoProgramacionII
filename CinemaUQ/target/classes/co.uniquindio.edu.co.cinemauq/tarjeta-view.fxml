@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.chart.*?>
+<AnchorPane prefHeight="750.0" prefWidth="1106.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="co.uniquindio.edu.co.cinemauq.controller.TarjetaController">
+<children>
+<Label layoutX="25" layoutY="20" style="-fx-font-size:24px; -fx-font-weight:bold;" text="CINEMAUQ - TARJETA VIRTUAL" />
+<VBox layoutX="25" layoutY="85" prefWidth="350" spacing="10">
+<Label style="-fx-font-size: 17px;" text="MI TARJETA" underline="true" />
+<Label fx:id="lblNumeroTarjeta" text="Número: -" />
+<Label fx:id="lblEstadoTarjeta" text="Estado: -" />
+<Label fx:id="lblSaldo" style="-fx-font-size:22px; -fx-font-weight:bold;" text="Saldo: $0" />
+<Button onAction="#actualizarTarjeta" prefWidth="300" style="-fx-background-color: #007bff; -fx-text-fill: white; -fx-font-weight: bold;" text="Actualizar datos" />
+<Button onAction="#volverMenu" prefWidth="300" style="-fx-background-color: #6c757d; -fx-text-fill: white; -fx-font-weight: bold;" text="Volver al menú" />
+</VBox>
+<VBox layoutX="400" layoutY="85" prefWidth="675" spacing="10">
+<Label style="-fx-font-size: 17px;" text="MOVIMIENTOS DE LA TARJETA" underline="true" />
+<TableView fx:id="tblMovimientos" prefHeight="450" prefWidth="1056"><columns><TableColumn fx:id="colFecha" prefWidth="170" text="Fecha" />
+<TableColumn fx:id="colTipo" prefWidth="160" text="Tipo" />
+<TableColumn fx:id="colMonto" prefWidth="150" text="Monto" />
+<TableColumn fx:id="colCompra" prefWidth="160" text="Compra" /></columns></TableView>
+</VBox>
+</children>
+</AnchorPane>

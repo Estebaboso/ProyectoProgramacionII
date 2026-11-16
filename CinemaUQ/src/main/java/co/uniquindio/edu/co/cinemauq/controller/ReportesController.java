@@ -31,7 +31,7 @@ public class ReportesController {
     public void initialize() {
         generadorReportes = new GeneradorReportes();
 
-        cbTipoReporte.getItems().add("Ventas");
+        cbTipoReporte.getItems().addAll("Ventas", "Entradas", "Ocupacion", "Productos y combos", "Recargas", "Cancelaciones y reembolsos", "Puntos");
         cbTipoReporte.getSelectionModel().selectFirst();
     }
 
@@ -51,13 +51,17 @@ public class ReportesController {
             return;
         }
 
-        if (tipoReporte.equals("Ventas")) {
-            reporteActual = generadorReportes.generarReporteVentas(
-                    fechaInicio, fechaFin
-            );
-
-            txtReporte.setText(reporteActual.generarTexto());
+        switch (tipoReporte) {
+            case "Ventas" -> reporteActual = generadorReportes.generarReporteVentas(fechaInicio,fechaFin);
+            case "Entradas" -> reporteActual = generadorReportes.generarReporteEntradas(fechaInicio,fechaFin);
+            case "Ocupacion" -> reporteActual = generadorReportes.generarReporteOcupacion(fechaInicio,fechaFin);
+            case "Productos y combos" -> reporteActual = generadorReportes.generarReporteProductos(fechaInicio,fechaFin);
+            case "Recargas" -> reporteActual = generadorReportes.generarReporteRecargas(fechaInicio,fechaFin);
+            case "Cancelaciones y reembolsos" -> reporteActual = generadorReportes.generarReporteCancelaciones(fechaInicio,fechaFin);
+            case "Puntos" -> reporteActual = generadorReportes.generarReportePuntos(fechaInicio,fechaFin);
+            default -> { mostrarMensaje("Selecciona un tipo de reporte."); return; }
         }
+        txtReporte.setText(reporteActual.generarTexto());
     }
 
     @FXML
@@ -69,7 +73,7 @@ public class ReportesController {
 
         FileChooser selector = new FileChooser();
         selector.setTitle("Guardar reporte");
-        selector.setInitialFileName("Reporte_Ventas.txt");
+        selector.setInitialFileName("Reporte_CinemaUQ.txt");
 
         selector.getExtensionFilters().add(
                 new FileChooser.ExtensionFilter(
@@ -100,26 +104,7 @@ public class ReportesController {
 
     @FXML
     private void volverMenuPrincipal(ActionEvent event) {
-        try {
-            FXMLLoader loader = new FXMLLoader(
-                    getClass().getResource(
-                            "/co.uniquindio.edu.co.cinemauq/inicio-view.fxml"
-                    )
-            );
-
-            Scene scene = new Scene(loader.load());
-
-            Stage stage = (Stage) ((Node) event.getSource())
-                    .getScene().getWindow();
-
-            stage.setScene(scene);
-            stage.setTitle("CinemaUQ");
-            stage.show();
-
-        } catch (IOException e) {
-            mostrarMensaje("No se pudo regresar al menú principal.");
-            e.printStackTrace();
-        }
+        Navegacion.abrir(event, "menu-administrador-view.fxml");
     }
 
     private void mostrarMensaje(String mensaje) {

@@ -46,6 +46,51 @@ public class CinemaUQ {
         return instancia;
     }
 
+    public boolean registrarCliente(Cliente nuevo) {
+        if (nuevo == null || nuevo.getId() == null || nuevo.getCorreoE() == null || nuevo.getId().isBlank() || nuevo.getCorreoE().isBlank()) {
+            return false;
+        }
+
+        for (Cliente cliente : clientes) {
+            if (cliente.getId().equalsIgnoreCase(nuevo.getId()) || cliente.getCorreoE().equalsIgnoreCase(nuevo.getCorreoE())) {
+                return false;
+            }
+        }
+
+        for (Administrador admin : administradores) {
+            if (admin.getId().equalsIgnoreCase(nuevo.getId()) || admin.getCorreoE().equalsIgnoreCase(nuevo.getCorreoE())) {
+                return false;
+            }
+        }
+
+        clientes.add(nuevo);
+        return true;
+    }
+
+    public boolean registrarProducto(Producto producto) {
+        if (producto == null || productos.contains(producto)) {
+            return false;
+        }
+
+        productos.add(producto);
+        return true;
+    }
+
+    public boolean registrarPromocion(Promocion promocion) {
+        if (promocion == null) {
+            return false;
+        }
+
+        for (Promocion p : promociones) {
+            if (p.getId() == promocion.getId()) {
+                return false;
+            }
+        }
+
+        promociones.add(promocion);
+        return true;
+    }
+
     public List<Pelicula> getPeliculas() {
         return peliculas;
     }

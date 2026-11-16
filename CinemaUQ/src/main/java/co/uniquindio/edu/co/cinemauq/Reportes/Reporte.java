@@ -28,24 +28,35 @@ public class Reporte {
         registros.add(registro);
     }
 // Esto es solo la estructura del reporte
-    public String generarTexto() {
-        StringBuilder texto = new StringBuilder();
+public String generarTexto() {
 
-        texto.append("====================================\n");
-        texto.append(titulo).append("\n");
-        texto.append("====================================\n");
-        texto.append("Fecha de generación: ").append(fechaGeneracion).append("\n");
-        texto.append("Desde: ").append(fechaInicio).append("\n");
-        texto.append("Hasta: ").append(fechaFin).append("\n\n");
+    StringBuilder texto = new StringBuilder();
 
-        for (String registro : registros) {
-            texto.append(registro).append("\n");
-        }
+    texto.append("====================================\n");
+    texto.append(titulo).append("\n");
+    texto.append("====================================\n");
 
-        texto.append("\nTotal: $").append(total);
+    texto.append("Fecha de generacion: ")
+            .append(fechaGeneracion).append("\n");
 
-        return texto.toString();
+    texto.append("Desde: ")
+            .append(fechaInicio).append("\n");
+
+    texto.append("Hasta: ")
+            .append(fechaFin).append("\n\n");
+
+    for (String registro : registros) {
+        texto.append(registro).append("\n");
     }
+
+    texto.append("\nRegistros encontrados: ")
+            .append(registros.size());
+
+    texto.append("\nTotal del reporte: ")
+            .append(total);
+
+    return texto.toString();
+}
 
     public String getTitulo() {
         return titulo;
