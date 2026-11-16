@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="750.0" prefWidth="1106.0"
+            xmlns="http://javafx.com/javafx/17.0.12"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="co.uniquindio.edu.co.cinemauq.controller.PeliculasController">
+
+    <children>
+        <Label layoutX="420.0" layoutY="20.0"
+               style="-fx-font-size: 24px; -fx-font-weight: bold;"
+               text="CINEMAUQ - CARTELERA" />
+
+        <!-- BUSQUEDA -->
+        <VBox layoutX="25.0" layoutY="90.0" prefWidth="300.0" spacing="10">
+            <Label style="-fx-font-size:18px;" text="BUSCAR PELICULA" underline="true" />
+
+            <TextField fx:id="txtBuscarPelicula"
+                       promptText="Nombre de la película" />
+
+            <Button onAction="#buscarPelicula"
+                    prefWidth="300.0"
+                    style="-fx-background-color: #007bff; -fx-text-fill: white; -fx-font-weight: bold;"
+                    text="Buscar" />
+        </VBox>
+
+        <!-- INFORMACION DE PELICULAS -->
+        <VBox layoutX="25.0" layoutY="230.0" prefWidth="1056.0" spacing="10">
+            <Label style="-fx-font-size:18px;" text="PELICULAS DISPONIBLES" underline="true" />
+
+            <TableView fx:id="tblPeliculas" prefHeight="300.0" prefWidth="1056.0">
+                <columns>
+                    <TableColumn fx:id="colId" prefWidth="120.0" text="ID" />
+                    <TableColumn fx:id="colNombre" prefWidth="250.0" text="Película" />
+                    <TableColumn fx:id="colGenero" prefWidth="180.0" text="Género" />
+                    <TableColumn fx:id="colDuracion" prefWidth="150.0" text="Duración" />
+                    <TableColumn fx:id="colRestriccion" prefWidth="150.0" text="Restricción" />
+                </columns>
+            </TableView>
+        </VBox>
+
+        <!-- ACCIONES -->
+        <VBox layoutX="25.0" layoutY="570.0" spacing="10">
+            <Label style="-fx-font-size:18px;" text="ACCIONES" underline="true" />
+
+            <Button onAction="#verFunciones"
+                    prefWidth="200.0"
+                    style="-fx-background-color: #28a745; -fx-text-fill: white; -fx-font-weight: bold;"
+                    text="Ver Funciones" />
+        </VBox>
+
+        <!-- VOLVER -->
+        <Button layoutX="25.0" layoutY="700.0"
+                onAction="#volverMenuPrincipal"
+                style="-fx-background-color: #6c757d; -fx-text-fill: white; -fx-font-weight: bold;"
+                text="Volver al Menú Principal" />
+    </children>
+
+</AnchorPane>

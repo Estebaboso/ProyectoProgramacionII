@@ -7,61 +7,29 @@
 
 <VBox alignment="CENTER" prefHeight="474.0" prefWidth="466.0" spacing="20.0"
       xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="uniquindio.edu.co.parqueadero.controller.HelloController">
+      fx:controller="co.uniquindio.edu.co.cinemauq.controller.InicioController">
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
     </padding>
 
-    <Label fx:id="welcomeText" alignment="TOP_CENTER" text="Parqueadero">
+    <Label alignment="TOP_CENTER" text="CinemaUQ">
         <font>
             <Font name="System Bold" size="24.0" />
         </font>
     </Label>
 
-    <Label text="Haz clic para ingresar">
+    <Label text="Bienvenido, selecciona una opción">
         <font>
             <Font size="14.0" />
         </font>
     </Label>
 
-    <Button onAction="#onIngresarClick" pref<?xml version="1.0" encoding="UTF-8"?>
-
-    <?import javafx.geometry.*?>
-    <?import javafx.scene.control.*?>
-    <?import javafx.scene.layout.*?>
-    <?import javafx.scene.text.*?>
-
-    <VBox alignment="CENTER" prefHeight="474.0" prefWidth="466.0" spacing="20.0"
-          xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1"
-          fx:controller="co.uniquindio.edu.co.cinemauq.controller.InicioController">
-        <padding>
-            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-        </padding>
-
-        <Label alignment="TOP_CENTER" text="CinemaUQ">
-            <font>
-                <Font name="System Bold" size="24.0" />
-            </font>
-        </Label>
-
-        <Label text="Bienvenido, selecciona una opción">
-            <font>
-                <Font size="14.0" />
-            </font>
-        </Label>
-
-        <Button onAction="#abrirLogin" prefHeight="30.0" prefWidth="160.0"
-                style="-fx-background-color: #28a745; -fx-text-fill: white; -fx-font-weight: bold;"
-                text="INICIAR SESIÓN" />
-
-        <Button onAction="#abrirRegistro" prefHeight="30.0" prefWidth="160.0"
-                style="-fx-background-color: #007bff; -fx-text-fill: white; -fx-font-weight: bold;"
-                text="REGISTRARSE" />
-
-        <Button onAction="#salir" prefHeight="30.0" prefWidth="160.0"
-                style="-fx-background-color: #6c757d; -fx-text-fill: white; -fx-font-weight: bold;"
-                text="SALIR" />
-    </VBox>Height="30.0" prefWidth="100.0"
+    <Button onAction="#abrirLogin" prefHeight="30.0" prefWidth="160.0"
             style="-fx-background-color: #28a745; -fx-text-fill: white; -fx-font-weight: bold;"
-            text="INGRESAR" />
+            text="INICIAR SESIÓN" />
+
+
+    <Button onAction="#salir" prefHeight="30.0" prefWidth="160.0"
+            style="-fx-background-color: #6c757d; -fx-text-fill: white; -fx-font-weight: bold;"
+            text="SALIR" />
 </VBox>
