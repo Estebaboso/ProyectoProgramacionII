@@ -17,8 +17,11 @@ public class ObserverPuntos implements ObserverEvento {
         //  Primero recorre revisa el tipo de evento, si es diferente de compra_pagada lo ignora
 
         if (evento.getTipo() != TipoEvento.COMPRA_PAGADA) {
+            return;
+        }
 
-            // Asigna compra a evento.getCompra y crea la variable puntos
+
+        // Asigna compra a evento.getCompra y crea la variable puntos
 
             Compra compra = evento.getCompra();
             int puntos = 0;
@@ -44,4 +47,3 @@ public class ObserverPuntos implements ObserverEvento {
         }
 
     }
-}

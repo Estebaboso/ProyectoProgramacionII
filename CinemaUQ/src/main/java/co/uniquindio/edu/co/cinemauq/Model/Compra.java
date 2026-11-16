@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Compra {
+public class Compra implements SubjectEvento {
     private int id;
     private Cliente cliente;
     private LocalDateTime fechaHora;
@@ -31,6 +31,42 @@ public class Compra {
         this.promocion = promocion;
         this.observadores = new ArrayList<>();
         this.estado = new StatePendiente(this);
+        this.observadores.add(new ObserverPuntos());
+        this.observadores.add(new ObserverMovimiento());
+    }
+    //Cambia el estado de la compra con pagar y cancelar. perteneceA sirve para la politica de reembolso
+    @Override
+    public void subscribir(ObserverEvento observer) {
+        observadores.add(observer);
+    }
+
+    @Override
+    public void desuscribrir(ObserverEvento observer) {
+        observadores.remove(observer);
+    }
+
+    @Override
+    public void notificarObservadores(EventoCine evento) {
+        for (ObserverEvento observer : observadores) {
+            observer.actualizar(evento);
+        }
+    }
+
+    public void pagar() {
+        estado.pagar();
+    }
+
+    public void cancelar() {
+        estado.cancelar();
+    }
+
+    public boolean perteneceA(Funcion funcion) {
+        for (Entrada entrada : entradas) {
+            if (entrada.getFuncion() == funcion) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public int getId() {

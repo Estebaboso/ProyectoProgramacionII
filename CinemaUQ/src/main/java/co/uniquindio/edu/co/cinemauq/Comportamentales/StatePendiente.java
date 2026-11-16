@@ -1,8 +1,10 @@
 package co.uniquindio.edu.co.cinemauq.Comportamentales;
 
+import co.uniquindio.edu.co.cinemauq.Creacionales.CinemaUQ;
 import co.uniquindio.edu.co.cinemauq.Estructurales.ProcesadorPago;
 import co.uniquindio.edu.co.cinemauq.Estructurales.ProxyPago;
 import co.uniquindio.edu.co.cinemauq.Model.Compra;
+import co.uniquindio.edu.co.cinemauq.Model.Entrada;
 import co.uniquindio.edu.co.cinemauq.Model.TarjetaVirtual;
 
 public class StatePendiente implements StateCompra {
@@ -30,14 +32,22 @@ public class StatePendiente implements StateCompra {
         //mandamos al proxy a verificar si se realiza el pago
         boolean pagoRealizado = proxy.cobrarPago(tarjeta, compra.getCliente(), compra.getTotal());
         //nos devolvera un tru o un false en caso de que sea true la compra se realizo y en caso de false no se completo la compra
-        if(pagoRealizado){
+        if(!pagoRealizado){
             compra.setEstado(new StatePagada(compra));
-            System.out.println("La compra se realizo correctamente");
-            return true;
-        }else{
-            System.out.println("No se puedo realizar el pago.");
-            return false;
+            System.out.println("No se pudo realizar el pago");
+            return;
         }
 
+        for (Entrada entrada : compra.getEntradas()) {
+            entrada.getFuncion().getAsientosReservados().add(entrada.getAsiento().getCodigo());
+        }
+
+        compra.setEstado(new StatePagada(compra));
+        compra.getCliente().getCompras().add(compra);
+        CinemaUQ.getInstance().getCompras().add(compra);
+
+        System.out.println("La compra se realizo correctamente");
+
+        compra.notificarObservadores(new EventoCine(TipoEvento.COMPRA_PAGADA, compra));
     }
 }
