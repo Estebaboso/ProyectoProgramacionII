@@ -2,6 +2,11 @@ package co.uniquindio.edu.co.cinemauq.controller;
 
 import co.uniquindio.edu.co.cinemauq.Creacionales.CinemaUQ;
 import co.uniquindio.edu.co.cinemauq.Model.*;
+import co.uniquindio.edu.co.cinemauq.Creacionales.Entrada2D;
+import co.uniquindio.edu.co.cinemauq.Creacionales.Entrada3D;
+import co.uniquindio.edu.co.cinemauq.Comportamentales.StatePagada;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -16,7 +21,8 @@ public class SeleccionAsientosController {
     @FXML public void initialize() {
         var activas = FXCollections.<Funcion>observableArrayList();
         for (Funcion f: CinemaUQ.getInstance().getFunciones()) {
-            if (f.getEstadoFuncion() == EstadoFuncion.ACTIVA) activas.add(f);
+            if (f.getEstadoFuncion() == EstadoFuncion.ACTIVA
+                    && f.getFecha().atTime(f.getHoraInicio()).isAfter(LocalDateTime.now())) activas.add(f);
         }
         cbFuncion.setItems(activas);
         cbFuncion.setCellFactory(c -> new ListCell<>() {
@@ -68,7 +74,82 @@ public class SeleccionAsientosController {
     @FXML private void continuarCompra(ActionEvent e) {
         if (Sesion.clienteActual == null) { Navegacion.mensaje("Inicia sesión como cliente."); return; }
         if (Sesion.funcionSeleccionada == null || Sesion.asientosSeleccionados.isEmpty()) { Navegacion.mensaje("Selecciona al menos un asiento."); return; }
+        if (Sesion.redimiendoEntrada) {
+            redimirEntrada(e);
+            return;
+        }
         Navegacion.abrir(e,"compra-view.fxml");
     }
-    @FXML private void volverMenu(ActionEvent e) { Navegacion.abrir(e,"menu-cliente-view.fxml"); }
+    private void redimirEntrada(ActionEvent e) {
+        CinemaUQ cine = CinemaUQ.getInstance();
+        Funcion funcion = Sesion.funcionSeleccionada;
+        Cliente cliente = Sesion.clienteActual;
+        int costo = cine.getPuntosEntrada();
+
+        if (Sesion.asientosSeleccionados.size() != 1) {
+            Navegacion.mensaje("Selecciona un solo asiento por redención.");
+            return;
+        }
+        if (funcion.getEstadoFuncion() != EstadoFuncion.ACTIVA
+                || !cine.getFunciones().contains(funcion)
+                || !funcion.getFecha().atTime(funcion.getHoraInicio()).isAfter(LocalDateTime.now())) {
+            Navegacion.mensaje("La función ya no está disponible.");
+            return;
+        }
+        Asiento asiento = Sesion.asientosSeleccionados.get(0);
+        if (funcion.getAsientosReservados().contains(asiento.getCodigo())) {
+            Navegacion.mensaje("El asiento ya está reservado.");
+            mostrarAsientos();
+            return;
+        }
+        if (cliente.consultarPuntosDisponibles() < costo) {
+            Navegacion.mensaje("No tienes suficientes puntos.");
+            return;
+        }
+
+        int idCompra = 1;
+        int idEntrada = 1;
+        for (Compra compra : cine.getCompras()) {
+            if (compra.getId() >= idCompra) idCompra = compra.getId() + 1;
+            for (Entrada entrada : compra.getEntradas()) {
+                if (entrada.getId() >= idEntrada) idEntrada = entrada.getId() + 1;
+            }
+        }
+
+        Entrada entrada;
+        if (funcion.getTipoFuncion() == TipoFuncion.TRES_D) {
+            entrada = new Entrada3D(idEntrada, funcion, asiento, 0);
+        } else {
+            entrada = new Entrada2D(idEntrada, funcion, asiento, 0);
+        }
+        ArrayList<Entrada> entradas = new ArrayList<>();
+        entradas.add(entrada);
+        Compra compra = new Compra(idCompra, cliente, LocalDateTime.now(),
+                entradas, new ArrayList<>(), null);
+        compra.setSubtotal(0);
+        compra.setIva(0);
+        compra.setTotal(0);
+        compra.setRedimidaConPuntos(true);
+        compra.setEstado(new StatePagada(compra));
+
+        if (!cliente.redimirPuntos(costo)) {
+            Navegacion.mensaje("No se pudieron descontar los puntos.");
+            return;
+        }
+        funcion.getAsientosReservados().add(asiento.getCodigo());
+        cliente.getCompras().add(compra);
+        cine.getCompras().add(compra);
+        Sesion.redimiendoEntrada = false;
+        Sesion.asientosSeleccionados.clear();
+        Sesion.funcionSeleccionada = null;
+        Navegacion.mensaje("Entrada redimida correctamente. Compra #" + idCompra);
+        Navegacion.abrir(e, "mis-compras-view.fxml");
+    }
+
+    @FXML private void volverMenu(ActionEvent e) {
+        Sesion.redimiendoEntrada = false;
+        Sesion.asientosSeleccionados.clear();
+        Sesion.funcionSeleccionada = null;
+        Navegacion.abrir(e,"menu-cliente-view.fxml");
+    }
 }

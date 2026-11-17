@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.chart.*?>
+
 <AnchorPane prefHeight="750.0" prefWidth="1106.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="co.uniquindio.edu.co.cinemauq.controller.SeleccionAsientosController">
 <children>
 <Label layoutX="25" layoutY="20" style="-fx-font-size:24px; -fx-font-weight:bold;" text="CINEMAUQ - SELECCIONAR ASIENTOS" />
 <VBox layoutX="25" layoutY="85" prefWidth="300" spacing="10">
 <Label style="-fx-font-size: 17px;" text="FUNCIÓN" underline="true" />
-<ComboBox fx:id="cbFuncion" promptText="Seleccione una función" maxWidth="1.7976931348623157E308" />
+<ComboBox fx:id="cbFuncion" maxWidth="1.7976931348623157E308" promptText="Seleccione una función" />
 <Label fx:id="lblPelicula" text="Película: -" />
 <Label fx:id="lblSala" text="Sala: -" />
 <Label fx:id="lblFecha" text="Fecha y hora: -" />
@@ -15,11 +16,11 @@
 </VBox>
 <VBox layoutX="365" layoutY="85" prefWidth="710" spacing="10">
 <Label style="-fx-font-size: 17px;" text="ASIENTOS DISPONIBLES" underline="true" />
-<Label text="PANTALLA" alignment="CENTER" prefWidth="680" style="-fx-background-color: #e9ecef; -fx-padding: 10; -fx-font-weight: bold;" />
-<ScrollPane fitToWidth="true" prefHeight="420" prefWidth="690"><content><GridPane fx:id="gridAsientos" alignment="CENTER" hgap="8" vgap="8" style="-fx-padding: 20;" /></content></ScrollPane>
+<Label alignment="CENTER" prefWidth="680" style="-fx-background-color: #e9ecef; -fx-padding: 10; -fx-font-weight: bold;" text="PANTALLA" />
+<ScrollPane fitToWidth="true" prefHeight="420" prefWidth="690"><content><GridPane fx:id="gridAsientos" alignment="CENTER" hgap="8" style="-fx-padding: 20;" vgap="8" /></content></ScrollPane>
 <Label text="Verde: disponible | Rojo: ocupado | Azul: seleccionado" />
 </VBox>
-<VBox layoutX="25" layoutY="565" prefWidth="1050" spacing="10">
+<VBox layoutX="28.0" layoutY="292.0" prefWidth="1050" spacing="10">
 <Label fx:id="lblAsientosSeleccionados" text="Asientos seleccionados: ninguno" />
 <Label fx:id="lblTotalEntradas" text="Total entradas: $0" />
 <Button onAction="#continuarCompra" prefWidth="240" style="-fx-background-color: #28a745; -fx-text-fill: white; -fx-font-weight: bold;" text="Continuar compra" />

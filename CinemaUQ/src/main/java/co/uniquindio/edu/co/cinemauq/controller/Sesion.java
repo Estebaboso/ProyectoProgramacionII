@@ -9,11 +9,13 @@ public class Sesion {
     public static Cliente clienteActual;
     public static Administrador administradorActual;
     public static Funcion funcionSeleccionada;
+    public static boolean redimiendoEntrada = false;
     public static List<Asiento> asientosSeleccionados = new ArrayList<>();
     public static void cerrar() {
         clienteActual = null;
         administradorActual = null;
         funcionSeleccionada = null;
+        redimiendoEntrada = false;
         asientosSeleccionados.clear();
     }
 }

@@ -93,6 +93,34 @@ public class GestionFuncionesController {
                 FXCollections.observableArrayList(EstadoFuncion.values())
         );
 
+        cbPeliculaFuncion.setCellFactory(c -> new ListCell<>() {
+            @Override
+            protected void updateItem(Pelicula pelicula, boolean empty) {
+                super.updateItem(pelicula, empty);
+                setText(empty || pelicula == null ? null : pelicula.getNombre());
+            }
+        });
+        cbPeliculaFuncion.setButtonCell(new ListCell<>() {
+            @Override
+            protected void updateItem(Pelicula pelicula, boolean empty) {
+                super.updateItem(pelicula, empty);
+                setText(empty || pelicula == null ? null : pelicula.getNombre());
+            }
+        });
+        cbSalaFuncion.setCellFactory(c -> new ListCell<>() {
+            @Override
+            protected void updateItem(Sala sala, boolean empty) {
+                super.updateItem(sala, empty);
+                setText(empty || sala == null ? null : "Sala " + sala.getNumSala());
+            }
+        });
+        cbSalaFuncion.setButtonCell(new ListCell<>() {
+            @Override
+            protected void updateItem(Sala sala, boolean empty) {
+                super.updateItem(sala, empty);
+                setText(empty || sala == null ? null : "Sala " + sala.getNumSala());
+            }
+        });
         cargarCombos();
         configurarTabla();
         cargarFunciones();

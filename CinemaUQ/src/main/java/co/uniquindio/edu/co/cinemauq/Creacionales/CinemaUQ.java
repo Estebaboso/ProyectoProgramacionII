@@ -23,6 +23,9 @@ public class CinemaUQ {
     private List<Producto> productos;
     private List<Promocion> promociones;
     private List<Compra> compras;
+    private int puntosEntrada = 300;
+    private int puntosProducto = 200;
+    private int puntosCombo = 400;
 
     private CinemaUQ() {
         this.peliculas = new ArrayList<>();
@@ -44,6 +47,25 @@ public class CinemaUQ {
             instancia = new CinemaUQ();
         }
         return instancia;
+    }
+
+    // Los controladores de inicio de sesión consultan estos usuarios registrados.
+    public Administrador autenticarAdministrador(String correo, String clave) {
+        if (correo == null || clave == null) return null;
+        for (Administrador admin : administradores) {
+            if (admin.getCorreoE().equalsIgnoreCase(correo.trim())
+                    && admin.getContrasena().equals(clave)) return admin;
+        }
+        return null;
+    }
+
+    public Cliente autenticarCliente(String correo, String clave) {
+        if (correo == null || clave == null) return null;
+        for (Cliente cliente : clientes) {
+            if (cliente.getCorreoE().equalsIgnoreCase(correo.trim())
+                    && cliente.getContrasena().equals(clave)) return cliente;
+        }
+        return null;
     }
 
     public boolean registrarCliente(Cliente nuevo) {
@@ -154,4 +176,11 @@ public class CinemaUQ {
     public void setCompras(List<Compra> compras) {
         this.compras = compras;
     }
+    public int getPuntosEntrada() { return puntosEntrada; }
+    public int getPuntosProducto() { return puntosProducto; }
+    public int getPuntosCombo() { return puntosCombo; }
+
+    public void setPuntosEntrada(int puntosEntrada) { this.puntosEntrada = puntosEntrada; }
+    public void setPuntosProducto(int puntosProducto) { this.puntosProducto = puntosProducto; }
+    public void setPuntosCombo(int puntosCombo) { this.puntosCombo = puntosCombo; }
 }

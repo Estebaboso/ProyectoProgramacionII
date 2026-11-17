@@ -3,55 +3,36 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="750.0" prefWidth="1106.0"
-            xmlns="http://javafx.com/javafx/17.0.12"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="co.uniquindio.edu.co.cinemauq.controller.ReportesController">
+<AnchorPane prefHeight="750.0" prefWidth="1106.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="co.uniquindio.edu.co.cinemauq.controller.ReportesController">
 
     <children>
-        <Label layoutX="430.0" layoutY="20.0"
-               style="-fx-font-size: 24px; -fx-font-weight: bold;"
-               text="CINEMAUQ - REPORTES" />
+        <Label layoutX="430.0" layoutY="20.0" style="-fx-font-size: 24px; -fx-font-weight: bold;" text="CINEMAUQ - REPORTES" />
 
         <!-- SELECCION DEL REPORTE -->
         <VBox layoutX="25.0" layoutY="90.0" prefWidth="300.0" spacing="10">
             <Label style="-fx-font-size:18px;" text="GENERAR REPORTE" underline="true" />
 
-            <ComboBox fx:id="cbTipoReporte" prefWidth="300.0"
-                      promptText="Seleccione el tipo de reporte" />
+            <ComboBox fx:id="cbTipoReporte" prefWidth="300.0" promptText="Seleccione el tipo de reporte" />
 
-            <DatePicker fx:id="dpFechaInicio" prefWidth="300.0"
-                        promptText="Fecha inicial" />
+            <DatePicker fx:id="dpFechaInicio" prefWidth="300.0" promptText="Fecha inicial" />
 
-            <DatePicker fx:id="dpFechaFin" prefWidth="300.0"
-                        promptText="Fecha final" />
+            <DatePicker fx:id="dpFechaFin" prefWidth="300.0" promptText="Fecha final" />
 
-            <Button onAction="#generarReporte" prefWidth="300.0"
-                    style="-fx-background-color: #28a745; -fx-text-fill: white; -fx-font-weight: bold;"
-                    text="Generar Reporte" />
+            <Button onAction="#generarReporte" prefWidth="300.0" style="-fx-background-color: #28a745; -fx-text-fill: white; -fx-font-weight: bold;" text="Generar Reporte" />
         </VBox>
 
         <!-- RESULTADO -->
         <VBox layoutX="25.0" layoutY="310.0" prefWidth="1056.0" spacing="10">
             <Label style="-fx-font-size:18px;" text="RESULTADO DEL REPORTE" underline="true" />
 
-            <TextArea fx:id="txtReporte" prefHeight="300.0"
-                      prefWidth="1056.0"
-                      editable="false"
-                      promptText="Aquí aparecerá el resultado del reporte..."
-                      wrapText="true" />
+            <TextArea fx:id="txtReporte" editable="false" prefHeight="300.0" prefWidth="1056.0" promptText="Aquí aparecerá el resultado del reporte..." wrapText="true" />
         </VBox>
 
         <!-- ACCIONES -->
-        <HBox layoutX="25.0" layoutY="640.0" spacing="15">
-            <Button onAction="#guardarReporte"
-                    style="-fx-background-color: #007bff; -fx-text-fill: white; -fx-font-weight: bold;"
-                    text="Guardar Reporte" />
+        <HBox layoutX="25.0" layoutY="640.0" spacing="15" />
 
-            <Button onAction="#volverMenuPrincipal"
-                    style="-fx-background-color: #6c757d; -fx-text-fill: white; -fx-font-weight: bold;"
-                    text="Volver al Menú Principal" />
-        </HBox>
+         <Button layoutX="926.0" layoutY="266.0" onAction="#volverMenuPrincipal" style="-fx-background-color: #6c757d; -fx-text-fill: white; -fx-font-weight: bold;" text="Volver al Menú Principal" />
+         <Button layoutX="34.0" layoutY="279.0" onAction="#guardarReporte" style="-fx-background-color: #007bff; -fx-text-fill: white; -fx-font-weight: bold;" text="Guardar Reporte" />
     </children>
 
 </AnchorPane>

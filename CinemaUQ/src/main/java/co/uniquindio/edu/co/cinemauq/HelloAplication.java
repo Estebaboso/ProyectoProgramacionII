@@ -28,6 +28,8 @@ public class HelloAplication extends Application {
                 "admin@cinemauq.com"
         );
 
+        cinema.getAdministradores().add(adminDefault);
+
         // Crear tarjeta virtual para el cliente
         TarjetaVirtual tarjetaDefault = new TarjetaVirtual(
                 "TV001",

@@ -18,7 +18,7 @@ public class ProxyPago implements ProcesadorPago {
     public boolean cobrarPago(TarjetaVirtual tarjeta, Usuario usuario, double monto) {
         System.out.println("[REPORTE AUDITORIA PARA] " + usuario.getNombre() + " por el saldo de " + tarjeta.getSaldo());
 
-        if (tarjeta.getEstadoTarjeta() == EstadoTarjetaVirtual.NO_ACTIVA || tarjeta.getSaldo() <= 0) { //El 0 es temporal luego se cambia
+        if (tarjeta.getEstadoTarjeta() == EstadoTarjetaVirtual.NO_ACTIVA || tarjeta.getSaldo() < monto) { //El 0 es temporal luego se cambia
             System.out.println("Transacción denegada para el usuario " + usuario.getNombre() + ". No cumple con las condiciones");
             return false;
         }

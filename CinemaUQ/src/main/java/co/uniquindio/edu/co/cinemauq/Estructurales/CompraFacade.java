@@ -6,72 +6,83 @@ import co.uniquindio.edu.co.cinemauq.Exepciones.CompraInvalidaExcepcion;
 import co.uniquindio.edu.co.cinemauq.Model.Cliente;
 import co.uniquindio.edu.co.cinemauq.Model.Compra;
 import co.uniquindio.edu.co.cinemauq.Model.Entrada;
-import co.uniquindio.edu.co.cinemauq.Model.Funcion;
 import co.uniquindio.edu.co.cinemauq.Model.Promocion;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CompraFacade {
 
-    // Referencia al sistema CinemaUQ para registrar las compras realizadas
     private CinemaUQ cinemaUQ;
 
     public CompraFacade(CinemaUQ cinemaUQ) {
         this.cinemaUQ = cinemaUQ;
     }
 
-    //esta wea va a organizar el proceso de compra
-    public Compra realizarCompra(
-            int id,
-            Cliente cliente,
-            List<Entrada> entradas,
-            List<Producto> productos,
-            Promocion promocion) throws CompraInvalidaExcepcion {
+    public Compra realizarCompra(int id, Cliente cliente, List<Entrada> entradas, List<Producto> productos, Promocion promocion) throws CompraInvalidaExcepcion {
 
-        // inicia el builder para construirlo
         CompraBuilder builder = new CompraBuilder(id, cliente);
 
         for (Entrada entrada : entradas) {
             builder.agregarEntrada(entrada);
         }
 
-        // Agrega los productos o combos
         for (Producto producto : productos) {
             builder.agregarProducto(producto);
         }
 
-        // aplica una promoción solamente si el cliente seleccionó alguna
         if (promocion != null) {
             builder.conPromocion(promocion);
         }
 
-        // El Builder valida los datos y calcula
         Compra compra = builder.construir();
 
-        // StatePendiente se encarga de utilizar el Proxy y verificar el pago.
-        // Si el pago falla, se devuelve la compra sin registrarla ni reservar asientos.
-        if (!compra.getEstado().pagar()) {
-            return compra;
+        // Obtener los productos individuales de la compra
+        List<ProductoIndividual> productosVendidos = new ArrayList<>();
+
+        for (Producto producto : productos) {
+
+            if (producto instanceof ProductoIndividual) {
+                productosVendidos.add((ProductoIndividual) producto);
+            }
+
+            if (producto instanceof Combo) {
+                Combo combo = (Combo) producto;
+
+                for (Producto item : combo.getListaDeProductos()) {
+
+                    if (item instanceof ProductoIndividual) {
+                        productosVendidos.add((ProductoIndividual) item);
+                    }
+                }
+            }
         }
 
-        //  Registra la compra en la lista general de CinemaUQ
-        cinemaUQ.getCompras().add(compra);
+        // Verificar que exista suficiente inventario
+        for (ProductoIndividual producto : productosVendidos) {
 
-        // Agrega la compra al historial del cliente
-        cliente.getCompras().add(compra);
+            int contador = 0;
 
-        // El Builder ya valido que todas las entradas sean de la misma función
-        Funcion funcion = entradas.get(0).getFuncion();
+            for (ProductoIndividual otro : productosVendidos) {
+                if (producto == otro) {
+                    contador++;
+                }
+            }
 
-        // Esto evita que otros clientes puedan adquirir los mismos asientos
-        for (Entrada entrada : entradas) {
-            funcion.getAsientosReservados().add(entrada.getAsiento().getCodigo());
+            if (producto.getStock() < contador) {
+                throw new CompraInvalidaExcepcion("No hay suficiente stock de " + producto.getNombre());
+            }
         }
 
+        // Realizar el pago
+        if (compra.getEstado().pagar()) {
 
-        System.out.println("Compra registrada correctamente.");
+            // Descontar los productos comprados
+            for (ProductoIndividual producto : productosVendidos) {
+                producto.descontarStock(1);
+            }
+        }
 
-        // devuelve la compra realizada
         return compra;
     }
 }

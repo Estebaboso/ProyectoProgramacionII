@@ -3,27 +3,18 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="750.0" prefWidth="1106.0"
-            xmlns="http://javafx.com/javafx/17.0.12"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="co.uniquindio.edu.co.cinemauq.controller.PeliculasController">
+<AnchorPane prefHeight="750.0" prefWidth="1106.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="co.uniquindio.edu.co.cinemauq.controller.PeliculasController">
 
     <children>
-        <Label layoutX="420.0" layoutY="20.0"
-               style="-fx-font-size: 24px; -fx-font-weight: bold;"
-               text="CINEMAUQ - CARTELERA" />
+        <Label layoutX="420.0" layoutY="20.0" style="-fx-font-size: 24px; -fx-font-weight: bold;" text="CINEMAUQ - CARTELERA" />
 
         <!-- BUSQUEDA -->
         <VBox layoutX="25.0" layoutY="90.0" prefWidth="300.0" spacing="10">
             <Label style="-fx-font-size:18px;" text="BUSCAR PELICULA" underline="true" />
 
-            <TextField fx:id="txtBuscarPelicula"
-                       promptText="Nombre de la película" />
+            <TextField fx:id="txtBuscarPelicula" promptText="Nombre de la película" />
 
-            <Button onAction="#buscarPelicula"
-                    prefWidth="300.0"
-                    style="-fx-background-color: #007bff; -fx-text-fill: white; -fx-font-weight: bold;"
-                    text="Buscar" />
+            <Button onAction="#buscarPelicula" prefWidth="300.0" style="-fx-background-color: #007bff; -fx-text-fill: white; -fx-font-weight: bold;" text="Buscar" />
         </VBox>
 
         <!-- INFORMACION DE PELICULAS -->
@@ -42,20 +33,13 @@
         </VBox>
 
         <!-- ACCIONES -->
-        <VBox layoutX="25.0" layoutY="570.0" spacing="10">
-            <Label style="-fx-font-size:18px;" text="ACCIONES" underline="true" />
+        <VBox layoutX="25.0" layoutY="570.0" spacing="10" />
+         <Label layoutX="786.0" layoutY="111.0" style="-fx-font-size:18px;" text="ACCIONES" underline="true" />
 
-            <Button onAction="#verFunciones"
-                    prefWidth="200.0"
-                    style="-fx-background-color: #28a745; -fx-text-fill: white; -fx-font-weight: bold;"
-                    text="Ver Funciones" />
-        </VBox>
+         <Button layoutX="763.0" layoutY="149.0" onAction="#verFunciones" prefWidth="200.0" style="-fx-background-color: #28a745; -fx-text-fill: white; -fx-font-weight: bold;" text="Ver Funciones" />
 
-        <!-- VOLVER -->
-        <Button layoutX="25.0" layoutY="700.0"
-                onAction="#volverMenuPrincipal"
-                style="-fx-background-color: #6c757d; -fx-text-fill: white; -fx-font-weight: bold;"
-                text="Volver al Menú Principal" />
+           <!-- VOLVER -->
+        <Button layoutX="786.0" layoutY="188.0" onAction="#volverMenuPrincipal" style="-fx-background-color: #6c757d; -fx-text-fill: white; -fx-font-weight: bold;" text="Volver al Menú Principal" />
     </children>
 
 </AnchorPane>

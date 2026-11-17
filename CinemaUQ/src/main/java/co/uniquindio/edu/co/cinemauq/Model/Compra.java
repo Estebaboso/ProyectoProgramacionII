@@ -17,6 +17,7 @@ public class Compra implements SubjectEvento {
     private double subtotal;
     private double iva;
     private double total;
+    private boolean redimidaConPuntos;
     private StateCompra estado;
     private StrategyReembolso politicaReembolso;
     private List<ObserverEvento> observadores;
@@ -163,5 +164,9 @@ public class Compra implements SubjectEvento {
 
     public void setObservadores(List<ObserverEvento> observadores) {
         this.observadores = observadores;
+    }
+    public boolean isRedimidaConPuntos() { return redimidaConPuntos; }
+    public void setRedimidaConPuntos(boolean redimidaConPuntos) {
+        this.redimidaConPuntos = redimidaConPuntos;
     }
 }
